@@ -1,0 +1,12 @@
+{
+    "name": "full-stack-app",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+        "start:frontend": "npm run start --prefix frontend",
+        "start:backend": "npm run dev --prefix backend"
+    },
+    "devDependencies": {
+        "concurrently": "^7.6.0"
+    }
+}
