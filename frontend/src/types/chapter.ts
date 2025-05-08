@@ -2,6 +2,7 @@ export interface Chapter {
   _id: string;
   title: string;
   description: string;
+  qrId: string;
   qrContent: string;
   qrUrl: string;
   subject: string;

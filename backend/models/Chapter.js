@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 const ChapterSchema = new mongoose.Schema({
   title: {
@@ -8,9 +9,13 @@ const ChapterSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  qrContent: {
+  qrId: {
     type: String,
-    required: true
+    unique: true,
+    default: () => crypto.randomBytes(16).toString('hex')
+  },
+  qrContent: {
+    type: String
   },
   qrUrl: {
     type: String

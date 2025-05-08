@@ -17,3 +17,8 @@ export const createChapter = async (chapterData: CreateChapterPayload): Promise<
   const response = await axiosInstance.post('/chapters', chapterData);
   return response.data;
 };
+
+export const updateChapterUrl = async (chapterId: string, qrUrl: string): Promise<Chapter> => {
+  const response = await axiosInstance.patch(`/chapters/${chapterId}/url`, { qrUrl });
+  return response.data;
+};

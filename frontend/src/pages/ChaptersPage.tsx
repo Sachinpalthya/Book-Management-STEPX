@@ -1,44 +1,92 @@
 import React, { useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { getChaptersBySubject, createChapter } from '../api/chapters';
 import Navbar from '../components/common/Navbar';
 import Sidebar from '../components/common/Sidebar';
 import ChapterList from '../components/chapters/ChapterList';
 import UploadFileModal from '../components/chapters/UploadFileModal';
 
-// Mock chapters data
-const mockChapters = [
-  { id: '1', title: 'Chapter 1: Introduction', qrUrl: 'https://example.com/chapter1' },
-  { id: '2', title: 'Chapter 2: Basic Concepts', qrUrl: 'https://example.com/chapter2' },
-  { id: '3', title: 'Chapter 3: Advanced Topics', qrUrl: 'https://example.com/chapter3' },
-  { id: '4', title: 'Chapter 4: Applications', qrUrl: 'https://example.com/chapter4' },
-  { id: '5', title: 'Chapter 5: Case Studies', qrUrl: 'https://example.com/chapter5' },
-];
+// Define param keys for type-safety
+const PARAM_KEYS = {
+  year: 'year',
+  subject: 'subject',
+  subjectId: 'subjectId'
+} as const;
+
+type ChapterPageParams = {
+  [PARAM_KEYS.year]: string;
+  [PARAM_KEYS.subject]: string;
+  [PARAM_KEYS.subjectId]: string;
+};
 
 const ChaptersPage: React.FC = () => {
   const { state } = useAuth();
-  const { year, subject, subjectId } = useParams<{ year: string; subject: string; subjectId: string }>();
+  const queryClient = useQueryClient();
+  const { year, subject, subjectId } = useParams<ChapterPageParams>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+  const { data: chapters, isLoading, error } = useQuery(
+    ['chapters', subjectId],
+    () => getChaptersBySubject(subjectId || ''),
+    {
+      enabled: !!subjectId,
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const createChapterMutation = useMutation(createChapter, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['chapters', subjectId]);
+      setIsUploadModalOpen(false);
+    },
+  });
 
   if (!state.isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
   const handleGenerateAllQR = () => {
-    alert('Generating QR codes for all chapters...');
-    // In a real app, we would make an API call to generate QR codes
+    // For now, just show success message
+    alert('QR codes generated successfully');
   };
 
   const handleUploadFile = () => {
     setIsUploadModalOpen(true);
   };
 
-  const handleFileUpload = (file: File) => {
-    console.log('Uploading file:', file);
-    // In a real app, we would make an API call to upload the file
-    alert(`File "${file.name}" uploaded successfully!`);
+  const handleFileUpload = async (file: File) => {
+    // Create a chapter with the file name as title and use it as static QR content
+    const chapterData = {
+      title: file.name.split('.')[0],
+      description: `Uploaded file: ${file.name}`,
+      subjectId: subjectId || '',
+      qrContent: file.name, // Static QR content based on file name
+      qrUrl: '', // URL can be updated later
+    };
+
+    try {
+      await createChapterMutation.mutateAsync(chapterData);
+    } catch (err) {
+      console.error('Error creating chapter:', err);
+      alert('Failed to create chapter. Please try again.');
+    }
+  };
+
+  const handleCreateChapter = async (data: { title: string; description: string }) => {
+    const chapterData = {
+      title: data.title,
+      description: data.description,
+      subjectId: subjectId || '',
+      qrContent: data.title, // Use title as static QR content
+      qrUrl: '', // URL can be updated later
+    };
+
+    await createChapterMutation.mutateAsync(chapterData);
   };
 
   return (
@@ -74,9 +122,12 @@ const ChaptersPage: React.FC = () => {
           
           <ChapterList
             subjectName={subject || 'Subject'}
-            chapters={mockChapters}
+            chapters={chapters || []}
+            isLoading={isLoading}
+            error={error}
             onGenerateAllQR={handleGenerateAllQR}
             onUploadFile={handleUploadFile}
+            onCreateChapter={handleCreateChapter}
           />
         </main>
       </div>

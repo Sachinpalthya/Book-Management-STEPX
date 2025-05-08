@@ -3,7 +3,17 @@ const { validationResult } = require('express-validator');
 
 const getSubjects = async (req, res) => {
   try {
-    const subjects = await Subject.find({ user: req.user._id });
+    const { year } = req.query;
+    const query = { user: req.user._id };  // Add user to query
+    
+    if (year) {
+      query.year = year;
+    }
+
+    const subjects = await Subject.find(query)
+      .populate('book', 'title')
+      .sort({ createdAt: -1 });
+      
     res.json(subjects);
   } catch (error) {
     console.error(error);
@@ -17,15 +27,22 @@ const createSubject = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name } = req.body;
+  const { name, description, year, book } = req.body;
 
   try {
     const subject = await Subject.create({
       name,
-      user: req.user._id
+      description,
+      year,
+      book,
+      user: req.user._id  // Add user field here
     });
 
-    res.status(201).json(subject);
+    // Populate book details before sending response
+    const populatedSubject = await Subject.findById(subject._id)
+      .populate('book', 'title');
+
+    res.status(201).json(populatedSubject);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

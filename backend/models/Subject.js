@@ -11,11 +11,16 @@ const SubjectSchema = new mongoose.Schema({
   year: {
     type: String,
     required: true,
-    enum: ['1st', '2nd']
+    enum: ['1st', '2nd', 'Masters']
   },
   book: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Book',
+    required: true
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   createdAt: {
@@ -24,4 +29,4 @@ const SubjectSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Subject', SubjectSchema); 
+module.exports = mongoose.model('Subject', SubjectSchema);
