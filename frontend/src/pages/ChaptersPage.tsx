@@ -3,7 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
-import { getChaptersBySubject, createChapter } from '../api/chapters';
+import { getChaptersBySubject, createChapter, createChaptersFromPDF } from '../api/chapters';
 import Navbar from '../components/common/Navbar';
 import Sidebar from '../components/common/Sidebar';
 import ChapterList from '../components/chapters/ChapterList';
@@ -46,6 +46,17 @@ const ChaptersPage: React.FC = () => {
     },
   });
 
+  const createPDFChaptersMutation = useMutation(
+    (chapters: { title: string; content: string }[]) =>
+      createChaptersFromPDF(subjectId || '', chapters),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['chapters', subjectId]);
+        setIsUploadModalOpen(false);
+      },
+    }
+  );
+
   if (!state.isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -59,21 +70,12 @@ const ChaptersPage: React.FC = () => {
     setIsUploadModalOpen(true);
   };
 
-  const handleFileUpload = async (file: File) => {
-    // Create a chapter with the file name as title and use it as static QR content
-    const chapterData = {
-      title: file.name.split('.')[0],
-      description: `Uploaded file: ${file.name}`,
-      subjectId: subjectId || '',
-      qrContent: file.name, // Static QR content based on file name
-      qrUrl: '', // URL can be updated later
-    };
-
+  const handleFileUpload = async (chapters: { title: string; content: string }[]) => {
     try {
-      await createChapterMutation.mutateAsync(chapterData);
+      await createPDFChaptersMutation.mutateAsync(chapters);
     } catch (err) {
-      console.error('Error creating chapter:', err);
-      alert('Failed to create chapter. Please try again.');
+      console.error('Error creating chapters from PDF:', err);
+      alert('Failed to process PDF. Please try again.');
     }
   };
 

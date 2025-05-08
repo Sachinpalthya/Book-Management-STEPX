@@ -1,6 +1,24 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 
+const SubQRSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  qrContent: {
+    type: String,
+    required: true
+  },
+  qrUrl: {
+    type: String
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  }
+});
+
 const ChapterSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -20,6 +38,7 @@ const ChapterSchema = new mongoose.Schema({
   qrUrl: {
     type: String
   },
+  subQRs: [SubQRSchema],
   subject: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subject',

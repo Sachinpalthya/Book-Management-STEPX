@@ -22,3 +22,11 @@ export const updateChapterUrl = async (chapterId: string, qrUrl: string): Promis
   const response = await axiosInstance.patch(`/chapters/${chapterId}/url`, { qrUrl });
   return response.data;
 };
+
+export const createChaptersFromPDF = async (subjectId: string, chapters: { title: string; content: string }[]): Promise<Chapter[]> => {
+  const response = await axiosInstance.post('/chapters/pdf', {
+    subjectId,
+    chapters
+  });
+  return response.data;
+};
