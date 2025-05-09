@@ -17,3 +17,16 @@ export const createSubject = async (subjectData: CreateSubjectPayload): Promise<
   const response = await axiosInstance.post('/subjects', subjectData);
   return response.data;
 };
+
+export const uploadSubjectFile = async (formData: FormData) => {
+  const response = await axiosInstance.post('/api/subjects/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total!);
+      // You could emit an event here to update the progress bar
+    },
+  });
+  return response.data;
+};

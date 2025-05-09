@@ -16,15 +16,29 @@ interface TextItem {
   str: string;
 }
 
+interface ProcessingResult {
+  success: boolean;
+  message: string;
+  details?: string;
+}
+
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ isOpen, onClose, onUpload }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [processingResult, setProcessingResult] = useState<ProcessingResult | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setProcessingResult(null);
+    }
+  }, [isOpen]);
 
   const extractChaptersFromPDF = async (file: File) => {
         setIsProcessing(true);
         setProgress(0);
+        setProcessingResult(null);
         
         try {
           // Validate file size
@@ -201,19 +215,31 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ isOpen, onClose, onUp
   };
 
   const handleUpload = async () => {
-    if (file) {
-      try {
-        const chapters = await extractChaptersFromPDF(file);
-        if (chapters.length > 0) {
-          onUpload(chapters);
-          onClose();
-        } else {
-          alert('No chapters could be extracted from the PDF. Please check the file format.');
-        }
-      } catch (error) {
-        console.error('Error processing PDF:', error);
-        alert('Error processing PDF file. Please try again.');
+    if (!file) return;
+
+    try {
+      const chapters = await extractChaptersFromPDF(file);
+      if (chapters.length > 0) {
+        setProcessingResult({
+          success: true,
+          message: 'Chapters extracted successfully',
+          details: `Found ${chapters.length} chapters in the PDF`
+        });
+        onUpload(chapters);
+      } else {
+        setProcessingResult({
+          success: false,
+          message: 'No chapters found',
+          details: 'Could not find any chapter content in the PDF. Please check the file format.'
+        });
       }
+    } catch (error) {
+      console.error('Error processing PDF:', error);
+      setProcessingResult({
+        success: false,
+        message: 'Failed to process PDF',
+        details: error instanceof Error ? error.message : 'Please try again with a different file.'
+      });
     }
   };
 
@@ -225,6 +251,18 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ isOpen, onClose, onUp
       setIsProcessing(false);
     }
   }, [isOpen]);
+
+  const AlertMessage = ({ result }: { result: ProcessingResult }) => (
+    <div className={`mt-4 p-3 rounded-md ${
+      result.success ? 'bg-green-50 text-green-800 border border-green-200' : 
+      'bg-red-50 text-red-800 border border-red-200'
+    }`}>
+      <p className="font-medium text-sm">{result.message}</p>
+      {result.details && (
+        <p className="text-sm mt-1 opacity-90">{result.details}</p>
+      )}
+    </div>
+  );
 
   if (!isOpen) return null;
 
@@ -296,6 +334,10 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ isOpen, onClose, onUp
                 </div>
               )}
               
+              {processingResult && (
+                <AlertMessage result={processingResult} />
+              )}
+              
               <div className="mt-5 sm:mt-6 flex justify-end space-x-3">
                 <Button variant="outline" onClick={onClose}>
                   Cancel
@@ -303,9 +345,9 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ isOpen, onClose, onUp
                 <Button
                   variant="primary"
                   onClick={handleUpload}
-                  disabled={!file}
+                  disabled={!file || isProcessing}
                 >
-                  Process PDF
+                  {isProcessing ? 'Processing...' : 'Process PDF'}
                 </Button>
               </div>
             </>

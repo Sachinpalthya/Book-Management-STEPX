@@ -8,6 +8,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,11 +19,12 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   disabled = false,
   onClick,
+  className = '',
 }) => {
   const baseClasses = 'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
   
   const variantClasses = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
+    primary: 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white focus:ring-blue-500',
     secondary: 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500',
     danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
     success: 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
@@ -41,18 +43,19 @@ const Button: React.FC<ButtonProps> = ({
   
   const widthClass = fullWidth ? 'w-full' : '';
   
-  const className = `
+  const classes = `
     ${baseClasses}
     ${variantClasses[variant]}
     ${sizeClasses[size]}
     ${disabledClasses}
     ${widthClass}
+    ${className}
   `.trim();
   
   return (
     <button
       type={type}
-      className={className}
+      className={classes}
       disabled={disabled}
       onClick={onClick}
     >

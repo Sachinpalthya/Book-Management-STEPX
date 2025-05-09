@@ -1,4 +1,5 @@
 const Chapter = require('../models/Chapter');
+const Subject = require('../models/Subject');
 const { validationResult } = require('express-validator');
 
 // Function to generate HTML for multi QR display
@@ -202,6 +203,32 @@ const getChapters = async (req, res) => {
   }
 };
 
+// Get chapters by subject
+const getChaptersBySubject = async (req, res) => {
+  try {
+    const { subject } = req.query;
+    
+    if (!subject) {
+      return res.status(400).json({ message: 'Subject ID is required' });
+    }
+
+    // Verify subject exists
+    const subjectExists = await Subject.findById(subject);
+    if (!subjectExists) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    const chapters = await Chapter.find({ subject })
+      .populate('subject', 'name')
+      .sort({ createdAt: -1 });
+      
+    res.json(chapters);
+  } catch (error) {
+    console.error('Error getting chapters:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
+  }
+};
+
 const createChapter = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -211,76 +238,45 @@ const createChapter = async (req, res) => {
   const { title, description, subjectId } = req.body;
 
   try {
-    // Create chapter with QR redirect URL and empty subQRs array
-    const chapter = await Chapter.create({
+    // Verify subject exists
+    const subject = await Subject.findById(subjectId);
+    if (!subject) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    const baseUrl = process.env.BASE_URL || 'http://localhost:5001';
+    
+    // Create new chapter
+    const chapter = new Chapter({
       title,
       description,
       subject: subjectId,
-      qrContent: '', // Will be set to the redirect URL
-      qrUrl: '',    // URL can be updated later
-      subQRs: []    // Initialize empty sub-QRs array
+      qrContent: '',
+      qrUrl: '',
+      subQRs: []
     });
 
-    // Update the QR content to point to our redirect endpoint
-    const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
-    const redirectUrl = `${baseUrl}/api/chapters/qr/${chapter.qrId}`;
-    
-    await Chapter.findByIdAndUpdate(
-      chapter._id,
-      { qrContent: redirectUrl }
-    );
+    // Save the chapter
+    await chapter.save();
 
-    // Populate subject details before sending response
+    // Generate and update QR redirect URL
+    const redirectUrl = `${baseUrl}/api/chapters/qr/${chapter._id}`;
+    chapter.qrContent = redirectUrl;
+    chapter.qrUrl = redirectUrl;
+    await chapter.save();
+
+    // Get populated chapter data
     const populatedChapter = await Chapter.findById(chapter._id)
       .populate('subject', 'name');
 
     res.status(201).json(populatedChapter);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error creating chapter:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
 };
 
-const updateChapterUrl = async (req, res) => {
-  const { chapterId } = req.params;
-  const { qrUrl } = req.body;
-
-  try {
-    // Check if the URL is a stringified array of sub-QRs
-    let updatedUrl = qrUrl;
-    try {
-      const subQRs = JSON.parse(qrUrl);
-      if (Array.isArray(subQRs)) {
-        // Validate each sub-QR object
-        const validSubQRs = subQRs.every(qr => 
-          qr.title && qr.qrContent && typeof qr.isActive === 'boolean'
-        );
-        if (!validSubQRs) {
-          return res.status(400).json({ message: 'Invalid sub-QR format' });
-        }
-      }
-    } catch (e) {
-      // If not JSON, treat as regular URL
-    }
-
-    const chapter = await Chapter.findByIdAndUpdate(
-      chapterId,
-      { qrUrl: updatedUrl },
-      { new: true }
-    ).populate('subject', 'name');
-
-    if (!chapter) {
-      return res.status(404).json({ message: 'Chapter not found' });
-    }
-
-    res.json(chapter);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// Handle bulk chapter creation from PDF
+// Create multiple chapters from PDF
 const createChaptersFromPDF = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -290,42 +286,161 @@ const createChaptersFromPDF = async (req, res) => {
   const { chapters, subjectId } = req.body;
 
   try {
-    const createdChapters = [];
-    const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
-
-    for (const chapterData of chapters) {
-      const chapter = await Chapter.create({
-        title: chapterData.title,
-        description: chapterData.content,
-        subject: subjectId,
-        qrContent: '',
-        qrUrl: '',
-        subQRs: []
-      });
-
-      const redirectUrl = `${baseUrl}/api/chapters/qr/${chapter.qrId}`;
-      await Chapter.findByIdAndUpdate(
-        chapter._id,
-        { qrContent: redirectUrl }
-      );
-
-      const populatedChapter = await Chapter.findById(chapter._id)
-        .populate('subject', 'name');
-      
-      createdChapters.push(populatedChapter);
+    // Verify subject exists
+    const subject = await Subject.findById(subjectId);
+    if (!subject) {
+      return res.status(404).json({ message: 'Subject not found' });
     }
 
-    res.status(201).json(createdChapters);
+    if (!Array.isArray(chapters)) {
+      return res.status(400).json({ message: 'Chapters must be an array' });
+    }
+
+    if (chapters.length === 0) {
+      return res.status(400).json({ message: 'No chapters provided' });
+    }
+
+    // Validate chapters structure
+    for (const chapter of chapters) {
+      if (!chapter.title || typeof chapter.title !== 'string') {
+        return res.status(400).json({ message: 'Each chapter must have a valid title string' });
+      }
+      if (!chapter.content || typeof chapter.content !== 'string') {
+        return res.status(400).json({ message: 'Each chapter must have valid content string' });
+      }
+    }
+
+    const createdChapters = [];
+    const baseUrl = process.env.BASE_URL || 'http://localhost:5001';
+
+    // Count total chapters to process for better error reporting
+    const totalChapters = chapters.length;
+    let failedChapters = 0;
+
+    for (const chapterData of chapters) {
+      if (!chapterData.title || !chapterData.content) {
+        console.warn('Skipping invalid chapter:', chapterData);
+        continue;
+      }
+
+      try {
+        // Create chapter
+        const chapter = new Chapter({
+          title: chapterData.title,
+          description: chapterData.content,
+          subject: subjectId,
+          qrContent: '',
+          qrUrl: '',
+          subQRs: []
+        });
+
+        // Save chapter
+        await chapter.save();
+
+        // Generate QR redirect URL
+        const redirectUrl = `${baseUrl}/api/chapters/qr/${chapter._id}`;
+        chapter.qrContent = redirectUrl;
+        chapter.qrUrl = redirectUrl;
+        await chapter.save();
+
+        // Get populated chapter data
+        const populatedChapter = await Chapter.findById(chapter._id)
+          .populate('subject', 'name');
+        
+        createdChapters.push(populatedChapter);
+      } catch (chapterError) {
+        console.error('Error creating individual chapter:', chapterError);
+        failedChapters++;
+        continue;
+      }
+    }
+
+    if (createdChapters.length === 0) {
+      return res.status(400).json({ 
+        message: 'No chapters could be created',
+        details: `All ${totalChapters} chapters failed to process.`
+      });
+    }
+
+    if (failedChapters > 0) {
+      // If some chapters failed but others succeeded, return a 207 Multi-Status
+      return res.status(207).json({
+        message: 'Some chapters were created successfully',
+        details: `${createdChapters.length} chapters created, ${failedChapters} failed`,
+        chapters: createdChapters
+      });
+    }
+
+    res.status(201).json({
+      message: 'All chapters created successfully',
+      chapters: createdChapters
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error creating chapters from PDF:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
+  }
+};
+
+// Add a sub QR code to a chapter
+const addSubQR = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { chapterId } = req.params;
+    const { title, qrUrl } = req.body;
+    
+    const chapter = await Chapter.findById(chapterId);
+    if (!chapter) {
+      return res.status(404).json({ message: 'Chapter not found' });
+    }
+
+    const subQR = {
+      title,
+      qrContent: qrUrl,
+      qrUrl,
+      isActive: true
+    };
+
+    chapter.subQRs.push(subQR);
+    await chapter.save();
+
+    const populatedChapter = await Chapter.findById(chapterId)
+      .populate('subject', 'name');
+
+    res.json(populatedChapter);
+  } catch (error) {
+    console.error('Error adding sub QR:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
+  }
+};
+
+// Delete a chapter
+const deleteChapter = async (req, res) => {
+  try {
+    const { chapterId } = req.params;
+    
+    const chapter = await Chapter.findById(chapterId);
+    if (!chapter) {
+      return res.status(404).json({ message: 'Chapter not found' });
+    }
+
+    await chapter.remove();
+    res.json({ message: 'Chapter deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting chapter:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
 };
 
 module.exports = {
   getChapters,
   createChapter,
-  updateChapterUrl,
   handleQRRedirect,
-  createChaptersFromPDF
+  createChaptersFromPDF,
+  getChaptersBySubject,
+  addSubQR,
+  deleteChapter
 };
