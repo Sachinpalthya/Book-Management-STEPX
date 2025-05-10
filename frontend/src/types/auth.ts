@@ -1,9 +1,4 @@
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  token: string;
-}
+import { User } from "./api";
 
 export interface LoginCredentials {
   email: string;

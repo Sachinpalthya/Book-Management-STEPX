@@ -1,14 +1,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
-import LoginForm from '../components/auth/LoginForm';
-import { useAuth } from '../hooks/useAuth';
+import LoginForm from '../components/Auth/LoginForm';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login: React.FC = () => {
-  const { state } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  if (state.isAuthenticated) {
-    return <Navigate to="/dashboard/1st" replace />;
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (

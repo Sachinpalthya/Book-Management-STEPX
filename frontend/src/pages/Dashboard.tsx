@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 import Navbar from '../components/common/Navbar';
 import Sidebar from '../components/common/Sidebar';
-import SubjectGrid from '../components/dashboard/SubjectGrid';
-import { YearType } from '../types/subject';
+import SubjectGrid from '../components/Dashboard/SubjectGrid';
+import BranchGrid from '../components/Dashboard/BranchGrid';
 
 const Dashboard: React.FC = () => {
-  const { state } = useAuth();
-  const { year = '1st' } = useParams<{ year: YearType }>();
+  const { state,isAuthenticated } = useAuth();
+  const { year = '1_year' } = useParams<{ year: '1_year' }>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Validate that year is one of the allowed values
-  const validYears: YearType[] = ['1st', '2nd', 'Masters'];
-  const selectedYear = validYears.includes(year as YearType) ? year as YearType : '1st';
+  const selectedYear = year;
 
-  if (!state.isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
@@ -27,7 +26,7 @@ const Dashboard: React.FC = () => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 overflow-y-auto p-6">
-          <SubjectGrid year={selectedYear} />
+          <BranchGrid year={selectedYear} />
         </main>
       </div>
     </div>

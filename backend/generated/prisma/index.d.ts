@@ -2429,12 +2429,16 @@ export namespace Prisma {
    */
 
   export type SubjectCountOutputType = {
+    branch: number
+    academicYear: number
     chapters: number
     books: number
     bookSubjects: number
   }
 
   export type SubjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | SubjectCountOutputTypeCountBranchArgs
+    academicYear?: boolean | SubjectCountOutputTypeCountAcademicYearArgs
     chapters?: boolean | SubjectCountOutputTypeCountChaptersArgs
     books?: boolean | SubjectCountOutputTypeCountBooksArgs
     bookSubjects?: boolean | SubjectCountOutputTypeCountBookSubjectsArgs
@@ -2449,6 +2453,20 @@ export namespace Prisma {
      * Select specific fields to fetch from the SubjectCountOutputType
      */
     select?: SubjectCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SubjectCountOutputType without action
+   */
+  export type SubjectCountOutputTypeCountBranchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchWhereInput
+  }
+
+  /**
+   * SubjectCountOutputType without action
+   */
+  export type SubjectCountOutputTypeCountAcademicYearArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicYearWhereInput
   }
 
   /**
@@ -2511,11 +2529,13 @@ export namespace Prisma {
   export type AcademicYearCountOutputType = {
     books: number
     subjects: number
+    branchs: number
   }
 
   export type AcademicYearCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     books?: boolean | AcademicYearCountOutputTypeCountBooksArgs
     subjects?: boolean | AcademicYearCountOutputTypeCountSubjectsArgs
+    branchs?: boolean | AcademicYearCountOutputTypeCountBranchsArgs
   }
 
   // Custom InputTypes
@@ -2543,18 +2563,27 @@ export namespace Prisma {
     where?: SubjectWhereInput
   }
 
+  /**
+   * AcademicYearCountOutputType without action
+   */
+  export type AcademicYearCountOutputTypeCountBranchsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchWhereInput
+  }
+
 
   /**
    * Count Type BranchCountOutputType
    */
 
   export type BranchCountOutputType = {
+    years: number
     users: number
     books: number
     subjects: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    years?: boolean | BranchCountOutputTypeCountYearsArgs
     users?: boolean | BranchCountOutputTypeCountUsersArgs
     books?: boolean | BranchCountOutputTypeCountBooksArgs
     subjects?: boolean | BranchCountOutputTypeCountSubjectsArgs
@@ -2569,6 +2598,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the BranchCountOutputType
      */
     select?: BranchCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountYearsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicYearWhereInput
   }
 
   /**
@@ -7979,16 +8015,12 @@ export namespace Prisma {
 
   export type SubjectAvgAggregateOutputType = {
     userId: number | null
-    branchId: number | null
-    academicYearId: number | null
     createdById: number | null
     updatedById: number | null
   }
 
   export type SubjectSumAggregateOutputType = {
     userId: number | null
-    branchId: number | null
-    academicYearId: number | null
     createdById: number | null
     updatedById: number | null
   }
@@ -7998,8 +8030,6 @@ export namespace Prisma {
     name: string | null
     description: string | null
     userId: number | null
-    branchId: number | null
-    academicYearId: number | null
     createdById: number | null
     updatedById: number | null
     deletedAt: Date | null
@@ -8013,8 +8043,6 @@ export namespace Prisma {
     name: string | null
     description: string | null
     userId: number | null
-    branchId: number | null
-    academicYearId: number | null
     createdById: number | null
     updatedById: number | null
     deletedAt: Date | null
@@ -8028,8 +8056,6 @@ export namespace Prisma {
     name: number
     description: number
     userId: number
-    branchId: number
-    academicYearId: number
     createdById: number
     updatedById: number
     deletedAt: number
@@ -8042,16 +8068,12 @@ export namespace Prisma {
 
   export type SubjectAvgAggregateInputType = {
     userId?: true
-    branchId?: true
-    academicYearId?: true
     createdById?: true
     updatedById?: true
   }
 
   export type SubjectSumAggregateInputType = {
     userId?: true
-    branchId?: true
-    academicYearId?: true
     createdById?: true
     updatedById?: true
   }
@@ -8061,8 +8083,6 @@ export namespace Prisma {
     name?: true
     description?: true
     userId?: true
-    branchId?: true
-    academicYearId?: true
     createdById?: true
     updatedById?: true
     deletedAt?: true
@@ -8076,8 +8096,6 @@ export namespace Prisma {
     name?: true
     description?: true
     userId?: true
-    branchId?: true
-    academicYearId?: true
     createdById?: true
     updatedById?: true
     deletedAt?: true
@@ -8091,8 +8109,6 @@ export namespace Prisma {
     name?: true
     description?: true
     userId?: true
-    branchId?: true
-    academicYearId?: true
     createdById?: true
     updatedById?: true
     deletedAt?: true
@@ -8193,8 +8209,6 @@ export namespace Prisma {
     name: string
     description: string | null
     userId: number
-    branchId: number | null
-    academicYearId: number | null
     createdById: number | null
     updatedById: number | null
     deletedAt: Date | null
@@ -8227,8 +8241,6 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     userId?: boolean
-    branchId?: boolean
-    academicYearId?: boolean
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
@@ -8251,8 +8263,6 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     userId?: boolean
-    branchId?: boolean
-    academicYearId?: boolean
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
@@ -8260,8 +8270,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    branch?: boolean | Subject$branchArgs<ExtArgs>
-    academicYear?: boolean | Subject$academicYearArgs<ExtArgs>
     createdBy?: boolean | Subject$createdByArgs<ExtArgs>
     updatedBy?: boolean | Subject$updatedByArgs<ExtArgs>
   }, ExtArgs["result"]["subject"]>
@@ -8271,8 +8279,6 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     userId?: boolean
-    branchId?: boolean
-    academicYearId?: boolean
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
@@ -8280,8 +8286,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    branch?: boolean | Subject$branchArgs<ExtArgs>
-    academicYear?: boolean | Subject$academicYearArgs<ExtArgs>
     createdBy?: boolean | Subject$createdByArgs<ExtArgs>
     updatedBy?: boolean | Subject$updatedByArgs<ExtArgs>
   }, ExtArgs["result"]["subject"]>
@@ -8291,8 +8295,6 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     userId?: boolean
-    branchId?: boolean
-    academicYearId?: boolean
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
@@ -8301,7 +8303,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SubjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "userId" | "branchId" | "academicYearId" | "createdById" | "updatedById" | "deletedAt" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
+  export type SubjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "userId" | "createdById" | "updatedById" | "deletedAt" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
   export type SubjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     branch?: boolean | Subject$branchArgs<ExtArgs>
@@ -8315,15 +8317,11 @@ export namespace Prisma {
   }
   export type SubjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    branch?: boolean | Subject$branchArgs<ExtArgs>
-    academicYear?: boolean | Subject$academicYearArgs<ExtArgs>
     createdBy?: boolean | Subject$createdByArgs<ExtArgs>
     updatedBy?: boolean | Subject$updatedByArgs<ExtArgs>
   }
   export type SubjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    branch?: boolean | Subject$branchArgs<ExtArgs>
-    academicYear?: boolean | Subject$academicYearArgs<ExtArgs>
     createdBy?: boolean | Subject$createdByArgs<ExtArgs>
     updatedBy?: boolean | Subject$updatedByArgs<ExtArgs>
   }
@@ -8332,8 +8330,8 @@ export namespace Prisma {
     name: "Subject"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      branch: Prisma.$BranchPayload<ExtArgs> | null
-      academicYear: Prisma.$AcademicYearPayload<ExtArgs> | null
+      branch: Prisma.$BranchPayload<ExtArgs>[]
+      academicYear: Prisma.$AcademicYearPayload<ExtArgs>[]
       createdBy: Prisma.$UserPayload<ExtArgs> | null
       updatedBy: Prisma.$UserPayload<ExtArgs> | null
       chapters: Prisma.$ChapterPayload<ExtArgs>[]
@@ -8345,8 +8343,6 @@ export namespace Prisma {
       name: string
       description: string | null
       userId: number
-      branchId: number | null
-      academicYearId: number | null
       createdById: number | null
       updatedById: number | null
       deletedAt: Date | null
@@ -8748,8 +8744,8 @@ export namespace Prisma {
   export interface Prisma__SubjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    branch<T extends Subject$branchArgs<ExtArgs> = {}>(args?: Subset<T, Subject$branchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    academicYear<T extends Subject$academicYearArgs<ExtArgs> = {}>(args?: Subset<T, Subject$academicYearArgs<ExtArgs>>): Prisma__AcademicYearClient<$Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    branch<T extends Subject$branchArgs<ExtArgs> = {}>(args?: Subset<T, Subject$branchArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicYear<T extends Subject$academicYearArgs<ExtArgs> = {}>(args?: Subset<T, Subject$academicYearArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdBy<T extends Subject$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Subject$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     updatedBy<T extends Subject$updatedByArgs<ExtArgs> = {}>(args?: Subset<T, Subject$updatedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     chapters<T extends Subject$chaptersArgs<ExtArgs> = {}>(args?: Subset<T, Subject$chaptersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChapterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8788,8 +8784,6 @@ export namespace Prisma {
     readonly name: FieldRef<"Subject", 'String'>
     readonly description: FieldRef<"Subject", 'String'>
     readonly userId: FieldRef<"Subject", 'Int'>
-    readonly branchId: FieldRef<"Subject", 'Int'>
-    readonly academicYearId: FieldRef<"Subject", 'Int'>
     readonly createdById: FieldRef<"Subject", 'Int'>
     readonly updatedById: FieldRef<"Subject", 'Int'>
     readonly deletedAt: FieldRef<"Subject", 'DateTime'>
@@ -9208,6 +9202,11 @@ export namespace Prisma {
      */
     include?: BranchInclude<ExtArgs> | null
     where?: BranchWhereInput
+    orderBy?: BranchOrderByWithRelationInput | BranchOrderByWithRelationInput[]
+    cursor?: BranchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchScalarFieldEnum | BranchScalarFieldEnum[]
   }
 
   /**
@@ -9227,6 +9226,11 @@ export namespace Prisma {
      */
     include?: AcademicYearInclude<ExtArgs> | null
     where?: AcademicYearWhereInput
+    orderBy?: AcademicYearOrderByWithRelationInput | AcademicYearOrderByWithRelationInput[]
+    cursor?: AcademicYearWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicYearScalarFieldEnum | AcademicYearScalarFieldEnum[]
   }
 
   /**
@@ -14942,16 +14946,19 @@ export namespace Prisma {
   export type AcademicYearMinAggregateOutputType = {
     id: number | null
     label: string | null
+    code: string | null
   }
 
   export type AcademicYearMaxAggregateOutputType = {
     id: number | null
     label: string | null
+    code: string | null
   }
 
   export type AcademicYearCountAggregateOutputType = {
     id: number
     label: number
+    code: number
     _all: number
   }
 
@@ -14967,16 +14974,19 @@ export namespace Prisma {
   export type AcademicYearMinAggregateInputType = {
     id?: true
     label?: true
+    code?: true
   }
 
   export type AcademicYearMaxAggregateInputType = {
     id?: true
     label?: true
+    code?: true
   }
 
   export type AcademicYearCountAggregateInputType = {
     id?: true
     label?: true
+    code?: true
     _all?: true
   }
 
@@ -15069,6 +15079,7 @@ export namespace Prisma {
   export type AcademicYearGroupByOutputType = {
     id: number
     label: string
+    code: string
     _count: AcademicYearCountAggregateOutputType | null
     _avg: AcademicYearAvgAggregateOutputType | null
     _sum: AcademicYearSumAggregateOutputType | null
@@ -15093,30 +15104,36 @@ export namespace Prisma {
   export type AcademicYearSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     label?: boolean
+    code?: boolean
     books?: boolean | AcademicYear$booksArgs<ExtArgs>
     subjects?: boolean | AcademicYear$subjectsArgs<ExtArgs>
+    branchs?: boolean | AcademicYear$branchsArgs<ExtArgs>
     _count?: boolean | AcademicYearCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicYear"]>
 
   export type AcademicYearSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     label?: boolean
+    code?: boolean
   }, ExtArgs["result"]["academicYear"]>
 
   export type AcademicYearSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     label?: boolean
+    code?: boolean
   }, ExtArgs["result"]["academicYear"]>
 
   export type AcademicYearSelectScalar = {
     id?: boolean
     label?: boolean
+    code?: boolean
   }
 
-  export type AcademicYearOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "label", ExtArgs["result"]["academicYear"]>
+  export type AcademicYearOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "label" | "code", ExtArgs["result"]["academicYear"]>
   export type AcademicYearInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     books?: boolean | AcademicYear$booksArgs<ExtArgs>
     subjects?: boolean | AcademicYear$subjectsArgs<ExtArgs>
+    branchs?: boolean | AcademicYear$branchsArgs<ExtArgs>
     _count?: boolean | AcademicYearCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AcademicYearIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -15127,10 +15144,12 @@ export namespace Prisma {
     objects: {
       books: Prisma.$BookPayload<ExtArgs>[]
       subjects: Prisma.$SubjectPayload<ExtArgs>[]
+      branchs: Prisma.$BranchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       label: string
+      code: string
     }, ExtArgs["result"]["academicYear"]>
     composites: {}
   }
@@ -15527,6 +15546,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     books<T extends AcademicYear$booksArgs<ExtArgs> = {}>(args?: Subset<T, AcademicYear$booksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subjects<T extends AcademicYear$subjectsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicYear$subjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    branchs<T extends AcademicYear$branchsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicYear$branchsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15558,6 +15578,7 @@ export namespace Prisma {
   interface AcademicYearFieldRefs {
     readonly id: FieldRef<"AcademicYear", 'Int'>
     readonly label: FieldRef<"AcademicYear", 'String'>
+    readonly code: FieldRef<"AcademicYear", 'String'>
   }
     
 
@@ -15994,6 +16015,30 @@ export namespace Prisma {
   }
 
   /**
+   * AcademicYear.branchs
+   */
+  export type AcademicYear$branchsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Branch
+     */
+    select?: BranchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Branch
+     */
+    omit?: BranchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInclude<ExtArgs> | null
+    where?: BranchWhereInput
+    orderBy?: BranchOrderByWithRelationInput | BranchOrderByWithRelationInput[]
+    cursor?: BranchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchScalarFieldEnum | BranchScalarFieldEnum[]
+  }
+
+  /**
    * AcademicYear without action
    */
   export type AcademicYearDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16202,6 +16247,7 @@ export namespace Prisma {
     name?: boolean
     location?: boolean
     createdAt?: boolean
+    years?: boolean | Branch$yearsArgs<ExtArgs>
     users?: boolean | Branch$usersArgs<ExtArgs>
     books?: boolean | Branch$booksArgs<ExtArgs>
     subjects?: boolean | Branch$subjectsArgs<ExtArgs>
@@ -16231,6 +16277,7 @@ export namespace Prisma {
 
   export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "location" | "createdAt", ExtArgs["result"]["branch"]>
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    years?: boolean | Branch$yearsArgs<ExtArgs>
     users?: boolean | Branch$usersArgs<ExtArgs>
     books?: boolean | Branch$booksArgs<ExtArgs>
     subjects?: boolean | Branch$subjectsArgs<ExtArgs>
@@ -16242,6 +16289,7 @@ export namespace Prisma {
   export type $BranchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Branch"
     objects: {
+      years: Prisma.$AcademicYearPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
       books: Prisma.$BookPayload<ExtArgs>[]
       subjects: Prisma.$SubjectPayload<ExtArgs>[]
@@ -16645,6 +16693,7 @@ export namespace Prisma {
    */
   export interface Prisma__BranchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    years<T extends Branch$yearsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$yearsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Branch$usersArgs<ExtArgs> = {}>(args?: Subset<T, Branch$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     books<T extends Branch$booksArgs<ExtArgs> = {}>(args?: Subset<T, Branch$booksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subjects<T extends Branch$subjectsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$subjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -17066,6 +17115,30 @@ export namespace Prisma {
      * Limit how many Branches to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Branch.years
+   */
+  export type Branch$yearsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicYear
+     */
+    select?: AcademicYearSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicYear
+     */
+    omit?: AcademicYearOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicYearInclude<ExtArgs> | null
+    where?: AcademicYearWhereInput
+    orderBy?: AcademicYearOrderByWithRelationInput | AcademicYearOrderByWithRelationInput[]
+    cursor?: AcademicYearWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicYearScalarFieldEnum | AcademicYearScalarFieldEnum[]
   }
 
   /**
@@ -20739,8 +20812,6 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     userId: 'userId',
-    branchId: 'branchId',
-    academicYearId: 'academicYearId',
     createdById: 'createdById',
     updatedById: 'updatedById',
     deletedAt: 'deletedAt',
@@ -20809,7 +20880,8 @@ export namespace Prisma {
 
   export const AcademicYearScalarFieldEnum: {
     id: 'id',
-    label: 'label'
+    label: 'label',
+    code: 'code'
   };
 
   export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[keyof typeof AcademicYearScalarFieldEnum]
@@ -21041,12 +21113,12 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    name?: string
     phone?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     roleId?: IntNullableFilter<"User"> | number | null
+    name?: StringFilter<"User"> | string
     email?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
     activeStatus?: BoolFilter<"User"> | boolean
@@ -21078,7 +21150,7 @@ export namespace Prisma {
     updatedBlockedUrls?: BlockedUrlListRelationFilter
     addedWhiteListedUrls?: WhitelistedUrlListRelationFilter
     updatedWhiteListedUrls?: WhitelistedUrlListRelationFilter
-  }, "id" | "name" | "phone">
+  }, "id" | "phone">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -21349,8 +21421,6 @@ export namespace Prisma {
     name?: StringFilter<"Subject"> | string
     description?: StringNullableFilter<"Subject"> | string | null
     userId?: IntFilter<"Subject"> | number
-    branchId?: IntNullableFilter<"Subject"> | number | null
-    academicYearId?: IntNullableFilter<"Subject"> | number | null
     createdById?: IntNullableFilter<"Subject"> | number | null
     updatedById?: IntNullableFilter<"Subject"> | number | null
     deletedAt?: DateTimeNullableFilter<"Subject"> | Date | string | null
@@ -21358,8 +21428,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Subject"> | Date | string
     updatedAt?: DateTimeFilter<"Subject"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
-    academicYear?: XOR<AcademicYearNullableScalarRelationFilter, AcademicYearWhereInput> | null
+    branch?: BranchListRelationFilter
+    academicYear?: AcademicYearListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     updatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     chapters?: ChapterListRelationFilter
@@ -21372,8 +21442,6 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     userId?: SortOrder
-    branchId?: SortOrderInput | SortOrder
-    academicYearId?: SortOrderInput | SortOrder
     createdById?: SortOrderInput | SortOrder
     updatedById?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -21381,8 +21449,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
-    branch?: BranchOrderByWithRelationInput
-    academicYear?: AcademicYearOrderByWithRelationInput
+    branch?: BranchOrderByRelationAggregateInput
+    academicYear?: AcademicYearOrderByRelationAggregateInput
     createdBy?: UserOrderByWithRelationInput
     updatedBy?: UserOrderByWithRelationInput
     chapters?: ChapterOrderByRelationAggregateInput
@@ -21398,8 +21466,6 @@ export namespace Prisma {
     name?: StringFilter<"Subject"> | string
     description?: StringNullableFilter<"Subject"> | string | null
     userId?: IntFilter<"Subject"> | number
-    branchId?: IntNullableFilter<"Subject"> | number | null
-    academicYearId?: IntNullableFilter<"Subject"> | number | null
     createdById?: IntNullableFilter<"Subject"> | number | null
     updatedById?: IntNullableFilter<"Subject"> | number | null
     deletedAt?: DateTimeNullableFilter<"Subject"> | Date | string | null
@@ -21407,8 +21473,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Subject"> | Date | string
     updatedAt?: DateTimeFilter<"Subject"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
-    academicYear?: XOR<AcademicYearNullableScalarRelationFilter, AcademicYearWhereInput> | null
+    branch?: BranchListRelationFilter
+    academicYear?: AcademicYearListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     updatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     chapters?: ChapterListRelationFilter
@@ -21421,8 +21487,6 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     userId?: SortOrder
-    branchId?: SortOrderInput | SortOrder
-    academicYearId?: SortOrderInput | SortOrder
     createdById?: SortOrderInput | SortOrder
     updatedById?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -21444,8 +21508,6 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Subject"> | string
     description?: StringNullableWithAggregatesFilter<"Subject"> | string | null
     userId?: IntWithAggregatesFilter<"Subject"> | number
-    branchId?: IntNullableWithAggregatesFilter<"Subject"> | number | null
-    academicYearId?: IntNullableWithAggregatesFilter<"Subject"> | number | null
     createdById?: IntNullableWithAggregatesFilter<"Subject"> | number | null
     updatedById?: IntNullableWithAggregatesFilter<"Subject"> | number | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Subject"> | Date | string | null
@@ -21759,30 +21821,37 @@ export namespace Prisma {
     NOT?: AcademicYearWhereInput | AcademicYearWhereInput[]
     id?: IntFilter<"AcademicYear"> | number
     label?: StringFilter<"AcademicYear"> | string
+    code?: StringFilter<"AcademicYear"> | string
     books?: BookListRelationFilter
     subjects?: SubjectListRelationFilter
+    branchs?: BranchListRelationFilter
   }
 
   export type AcademicYearOrderByWithRelationInput = {
     id?: SortOrder
     label?: SortOrder
+    code?: SortOrder
     books?: BookOrderByRelationAggregateInput
     subjects?: SubjectOrderByRelationAggregateInput
+    branchs?: BranchOrderByRelationAggregateInput
   }
 
   export type AcademicYearWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    label?: string
+    code?: string
     AND?: AcademicYearWhereInput | AcademicYearWhereInput[]
     OR?: AcademicYearWhereInput[]
     NOT?: AcademicYearWhereInput | AcademicYearWhereInput[]
+    label?: StringFilter<"AcademicYear"> | string
     books?: BookListRelationFilter
     subjects?: SubjectListRelationFilter
-  }, "id" | "label">
+    branchs?: BranchListRelationFilter
+  }, "id" | "code">
 
   export type AcademicYearOrderByWithAggregationInput = {
     id?: SortOrder
     label?: SortOrder
+    code?: SortOrder
     _count?: AcademicYearCountOrderByAggregateInput
     _avg?: AcademicYearAvgOrderByAggregateInput
     _max?: AcademicYearMaxOrderByAggregateInput
@@ -21796,6 +21865,7 @@ export namespace Prisma {
     NOT?: AcademicYearScalarWhereWithAggregatesInput | AcademicYearScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"AcademicYear"> | number
     label?: StringWithAggregatesFilter<"AcademicYear"> | string
+    code?: StringWithAggregatesFilter<"AcademicYear"> | string
   }
 
   export type BranchWhereInput = {
@@ -21806,6 +21876,7 @@ export namespace Prisma {
     name?: StringFilter<"Branch"> | string
     location?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
+    years?: AcademicYearListRelationFilter
     users?: UserListRelationFilter
     books?: BookListRelationFilter
     subjects?: SubjectListRelationFilter
@@ -21816,6 +21887,7 @@ export namespace Prisma {
     name?: SortOrder
     location?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    years?: AcademicYearOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
     books?: BookOrderByRelationAggregateInput
     subjects?: SubjectOrderByRelationAggregateInput
@@ -21829,6 +21901,7 @@ export namespace Prisma {
     NOT?: BranchWhereInput | BranchWhereInput[]
     location?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
+    years?: AcademicYearListRelationFilter
     users?: UserListRelationFilter
     books?: BookListRelationFilter
     subjects?: SubjectListRelationFilter
@@ -22477,8 +22550,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
@@ -22491,14 +22564,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -22513,8 +22586,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
@@ -22527,14 +22600,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -22545,8 +22618,6 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
@@ -22570,8 +22641,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22849,48 +22918,60 @@ export namespace Prisma {
 
   export type AcademicYearCreateInput = {
     label: string
+    code: string
     books?: BookCreateNestedManyWithoutAcademicYearInput
     subjects?: SubjectCreateNestedManyWithoutAcademicYearInput
+    branchs?: BranchCreateNestedManyWithoutYearsInput
   }
 
   export type AcademicYearUncheckedCreateInput = {
     id?: number
     label: string
+    code: string
     books?: BookUncheckedCreateNestedManyWithoutAcademicYearInput
     subjects?: SubjectUncheckedCreateNestedManyWithoutAcademicYearInput
+    branchs?: BranchUncheckedCreateNestedManyWithoutYearsInput
   }
 
   export type AcademicYearUpdateInput = {
     label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     books?: BookUpdateManyWithoutAcademicYearNestedInput
     subjects?: SubjectUpdateManyWithoutAcademicYearNestedInput
+    branchs?: BranchUpdateManyWithoutYearsNestedInput
   }
 
   export type AcademicYearUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     books?: BookUncheckedUpdateManyWithoutAcademicYearNestedInput
     subjects?: SubjectUncheckedUpdateManyWithoutAcademicYearNestedInput
+    branchs?: BranchUncheckedUpdateManyWithoutYearsNestedInput
   }
 
   export type AcademicYearCreateManyInput = {
     id?: number
     label: string
+    code: string
   }
 
   export type AcademicYearUpdateManyMutationInput = {
     label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
   }
 
   export type AcademicYearUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
   }
 
   export type BranchCreateInput = {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearCreateNestedManyWithoutBranchsInput
     users?: UserCreateNestedManyWithoutBranchInput
     books?: BookCreateNestedManyWithoutBranchInput
     subjects?: SubjectCreateNestedManyWithoutBranchInput
@@ -22901,6 +22982,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearUncheckedCreateNestedManyWithoutBranchsInput
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     books?: BookUncheckedCreateNestedManyWithoutBranchInput
     subjects?: SubjectUncheckedCreateNestedManyWithoutBranchInput
@@ -22910,6 +22992,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUpdateManyWithoutBranchsNestedInput
     users?: UserUpdateManyWithoutBranchNestedInput
     books?: BookUpdateManyWithoutBranchNestedInput
     subjects?: SubjectUpdateManyWithoutBranchNestedInput
@@ -22920,6 +23003,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUncheckedUpdateManyWithoutBranchsNestedInput
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     books?: BookUncheckedUpdateManyWithoutBranchNestedInput
     subjects?: SubjectUncheckedUpdateManyWithoutBranchNestedInput
@@ -23662,10 +23746,30 @@ export namespace Prisma {
     updatedById?: SortOrder
   }
 
+  export type BranchListRelationFilter = {
+    every?: BranchWhereInput
+    some?: BranchWhereInput
+    none?: BranchWhereInput
+  }
+
+  export type AcademicYearListRelationFilter = {
+    every?: AcademicYearWhereInput
+    some?: AcademicYearWhereInput
+    none?: AcademicYearWhereInput
+  }
+
   export type ChapterListRelationFilter = {
     every?: ChapterWhereInput
     some?: ChapterWhereInput
     none?: ChapterWhereInput
+  }
+
+  export type BranchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AcademicYearOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ChapterOrderByRelationAggregateInput = {
@@ -23677,8 +23781,6 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     userId?: SortOrder
-    branchId?: SortOrder
-    academicYearId?: SortOrder
     createdById?: SortOrder
     updatedById?: SortOrder
     deletedAt?: SortOrder
@@ -23689,8 +23791,6 @@ export namespace Prisma {
 
   export type SubjectAvgOrderByAggregateInput = {
     userId?: SortOrder
-    branchId?: SortOrder
-    academicYearId?: SortOrder
     createdById?: SortOrder
     updatedById?: SortOrder
   }
@@ -23700,8 +23800,6 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     userId?: SortOrder
-    branchId?: SortOrder
-    academicYearId?: SortOrder
     createdById?: SortOrder
     updatedById?: SortOrder
     deletedAt?: SortOrder
@@ -23715,8 +23813,6 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     userId?: SortOrder
-    branchId?: SortOrder
-    academicYearId?: SortOrder
     createdById?: SortOrder
     updatedById?: SortOrder
     deletedAt?: SortOrder
@@ -23727,8 +23823,6 @@ export namespace Prisma {
 
   export type SubjectSumOrderByAggregateInput = {
     userId?: SortOrder
-    branchId?: SortOrder
-    academicYearId?: SortOrder
     createdById?: SortOrder
     updatedById?: SortOrder
   }
@@ -23926,6 +24020,7 @@ export namespace Prisma {
   export type AcademicYearCountOrderByAggregateInput = {
     id?: SortOrder
     label?: SortOrder
+    code?: SortOrder
   }
 
   export type AcademicYearAvgOrderByAggregateInput = {
@@ -23935,11 +24030,13 @@ export namespace Prisma {
   export type AcademicYearMaxOrderByAggregateInput = {
     id?: SortOrder
     label?: SortOrder
+    code?: SortOrder
   }
 
   export type AcademicYearMinOrderByAggregateInput = {
     id?: SortOrder
     label?: SortOrder
+    code?: SortOrder
   }
 
   export type AcademicYearSumOrderByAggregateInput = {
@@ -25184,16 +25281,16 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type BranchCreateNestedOneWithoutSubjectsInput = {
-    create?: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutSubjectsInput
-    connect?: BranchWhereUniqueInput
+  export type BranchCreateNestedManyWithoutSubjectsInput = {
+    create?: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput> | BranchCreateWithoutSubjectsInput[] | BranchUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutSubjectsInput | BranchCreateOrConnectWithoutSubjectsInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
   }
 
-  export type AcademicYearCreateNestedOneWithoutSubjectsInput = {
-    create?: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput>
-    connectOrCreate?: AcademicYearCreateOrConnectWithoutSubjectsInput
-    connect?: AcademicYearWhereUniqueInput
+  export type AcademicYearCreateNestedManyWithoutSubjectsInput = {
+    create?: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput> | AcademicYearCreateWithoutSubjectsInput[] | AcademicYearUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutSubjectsInput | AcademicYearCreateOrConnectWithoutSubjectsInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
   }
 
   export type UserCreateNestedOneWithoutCreatedSubjectsInput = {
@@ -25228,6 +25325,18 @@ export namespace Prisma {
     connect?: BookSubjectWhereUniqueInput | BookSubjectWhereUniqueInput[]
   }
 
+  export type BranchUncheckedCreateNestedManyWithoutSubjectsInput = {
+    create?: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput> | BranchCreateWithoutSubjectsInput[] | BranchUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutSubjectsInput | BranchCreateOrConnectWithoutSubjectsInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+  }
+
+  export type AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput = {
+    create?: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput> | AcademicYearCreateWithoutSubjectsInput[] | AcademicYearUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutSubjectsInput | AcademicYearCreateOrConnectWithoutSubjectsInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+  }
+
   export type ChapterUncheckedCreateNestedManyWithoutSubjectInput = {
     create?: XOR<ChapterCreateWithoutSubjectInput, ChapterUncheckedCreateWithoutSubjectInput> | ChapterCreateWithoutSubjectInput[] | ChapterUncheckedCreateWithoutSubjectInput[]
     connectOrCreate?: ChapterCreateOrConnectWithoutSubjectInput | ChapterCreateOrConnectWithoutSubjectInput[]
@@ -25256,24 +25365,30 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubjectsInput, UserUpdateWithoutSubjectsInput>, UserUncheckedUpdateWithoutSubjectsInput>
   }
 
-  export type BranchUpdateOneWithoutSubjectsNestedInput = {
-    create?: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutSubjectsInput
-    upsert?: BranchUpsertWithoutSubjectsInput
-    disconnect?: BranchWhereInput | boolean
-    delete?: BranchWhereInput | boolean
-    connect?: BranchWhereUniqueInput
-    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutSubjectsInput, BranchUpdateWithoutSubjectsInput>, BranchUncheckedUpdateWithoutSubjectsInput>
+  export type BranchUpdateManyWithoutSubjectsNestedInput = {
+    create?: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput> | BranchCreateWithoutSubjectsInput[] | BranchUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutSubjectsInput | BranchCreateOrConnectWithoutSubjectsInput[]
+    upsert?: BranchUpsertWithWhereUniqueWithoutSubjectsInput | BranchUpsertWithWhereUniqueWithoutSubjectsInput[]
+    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    update?: BranchUpdateWithWhereUniqueWithoutSubjectsInput | BranchUpdateWithWhereUniqueWithoutSubjectsInput[]
+    updateMany?: BranchUpdateManyWithWhereWithoutSubjectsInput | BranchUpdateManyWithWhereWithoutSubjectsInput[]
+    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
   }
 
-  export type AcademicYearUpdateOneWithoutSubjectsNestedInput = {
-    create?: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput>
-    connectOrCreate?: AcademicYearCreateOrConnectWithoutSubjectsInput
-    upsert?: AcademicYearUpsertWithoutSubjectsInput
-    disconnect?: AcademicYearWhereInput | boolean
-    delete?: AcademicYearWhereInput | boolean
-    connect?: AcademicYearWhereUniqueInput
-    update?: XOR<XOR<AcademicYearUpdateToOneWithWhereWithoutSubjectsInput, AcademicYearUpdateWithoutSubjectsInput>, AcademicYearUncheckedUpdateWithoutSubjectsInput>
+  export type AcademicYearUpdateManyWithoutSubjectsNestedInput = {
+    create?: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput> | AcademicYearCreateWithoutSubjectsInput[] | AcademicYearUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutSubjectsInput | AcademicYearCreateOrConnectWithoutSubjectsInput[]
+    upsert?: AcademicYearUpsertWithWhereUniqueWithoutSubjectsInput | AcademicYearUpsertWithWhereUniqueWithoutSubjectsInput[]
+    set?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    disconnect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    delete?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    update?: AcademicYearUpdateWithWhereUniqueWithoutSubjectsInput | AcademicYearUpdateWithWhereUniqueWithoutSubjectsInput[]
+    updateMany?: AcademicYearUpdateManyWithWhereWithoutSubjectsInput | AcademicYearUpdateManyWithWhereWithoutSubjectsInput[]
+    deleteMany?: AcademicYearScalarWhereInput | AcademicYearScalarWhereInput[]
   }
 
   export type UserUpdateOneWithoutCreatedSubjectsNestedInput = {
@@ -25335,6 +25450,32 @@ export namespace Prisma {
     update?: BookSubjectUpdateWithWhereUniqueWithoutSubjectInput | BookSubjectUpdateWithWhereUniqueWithoutSubjectInput[]
     updateMany?: BookSubjectUpdateManyWithWhereWithoutSubjectInput | BookSubjectUpdateManyWithWhereWithoutSubjectInput[]
     deleteMany?: BookSubjectScalarWhereInput | BookSubjectScalarWhereInput[]
+  }
+
+  export type BranchUncheckedUpdateManyWithoutSubjectsNestedInput = {
+    create?: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput> | BranchCreateWithoutSubjectsInput[] | BranchUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutSubjectsInput | BranchCreateOrConnectWithoutSubjectsInput[]
+    upsert?: BranchUpsertWithWhereUniqueWithoutSubjectsInput | BranchUpsertWithWhereUniqueWithoutSubjectsInput[]
+    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    update?: BranchUpdateWithWhereUniqueWithoutSubjectsInput | BranchUpdateWithWhereUniqueWithoutSubjectsInput[]
+    updateMany?: BranchUpdateManyWithWhereWithoutSubjectsInput | BranchUpdateManyWithWhereWithoutSubjectsInput[]
+    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
+  }
+
+  export type AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput = {
+    create?: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput> | AcademicYearCreateWithoutSubjectsInput[] | AcademicYearUncheckedCreateWithoutSubjectsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutSubjectsInput | AcademicYearCreateOrConnectWithoutSubjectsInput[]
+    upsert?: AcademicYearUpsertWithWhereUniqueWithoutSubjectsInput | AcademicYearUpsertWithWhereUniqueWithoutSubjectsInput[]
+    set?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    disconnect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    delete?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    update?: AcademicYearUpdateWithWhereUniqueWithoutSubjectsInput | AcademicYearUpdateWithWhereUniqueWithoutSubjectsInput[]
+    updateMany?: AcademicYearUpdateManyWithWhereWithoutSubjectsInput | AcademicYearUpdateManyWithWhereWithoutSubjectsInput[]
+    deleteMany?: AcademicYearScalarWhereInput | AcademicYearScalarWhereInput[]
   }
 
   export type ChapterUncheckedUpdateManyWithoutSubjectNestedInput = {
@@ -25562,8 +25703,13 @@ export namespace Prisma {
   export type SubjectCreateNestedManyWithoutAcademicYearInput = {
     create?: XOR<SubjectCreateWithoutAcademicYearInput, SubjectUncheckedCreateWithoutAcademicYearInput> | SubjectCreateWithoutAcademicYearInput[] | SubjectUncheckedCreateWithoutAcademicYearInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutAcademicYearInput | SubjectCreateOrConnectWithoutAcademicYearInput[]
-    createMany?: SubjectCreateManyAcademicYearInputEnvelope
     connect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
+  }
+
+  export type BranchCreateNestedManyWithoutYearsInput = {
+    create?: XOR<BranchCreateWithoutYearsInput, BranchUncheckedCreateWithoutYearsInput> | BranchCreateWithoutYearsInput[] | BranchUncheckedCreateWithoutYearsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutYearsInput | BranchCreateOrConnectWithoutYearsInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
   }
 
   export type BookUncheckedCreateNestedManyWithoutAcademicYearInput = {
@@ -25576,8 +25722,13 @@ export namespace Prisma {
   export type SubjectUncheckedCreateNestedManyWithoutAcademicYearInput = {
     create?: XOR<SubjectCreateWithoutAcademicYearInput, SubjectUncheckedCreateWithoutAcademicYearInput> | SubjectCreateWithoutAcademicYearInput[] | SubjectUncheckedCreateWithoutAcademicYearInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutAcademicYearInput | SubjectCreateOrConnectWithoutAcademicYearInput[]
-    createMany?: SubjectCreateManyAcademicYearInputEnvelope
     connect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
+  }
+
+  export type BranchUncheckedCreateNestedManyWithoutYearsInput = {
+    create?: XOR<BranchCreateWithoutYearsInput, BranchUncheckedCreateWithoutYearsInput> | BranchCreateWithoutYearsInput[] | BranchUncheckedCreateWithoutYearsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutYearsInput | BranchCreateOrConnectWithoutYearsInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
   }
 
   export type BookUpdateManyWithoutAcademicYearNestedInput = {
@@ -25598,7 +25749,6 @@ export namespace Prisma {
     create?: XOR<SubjectCreateWithoutAcademicYearInput, SubjectUncheckedCreateWithoutAcademicYearInput> | SubjectCreateWithoutAcademicYearInput[] | SubjectUncheckedCreateWithoutAcademicYearInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutAcademicYearInput | SubjectCreateOrConnectWithoutAcademicYearInput[]
     upsert?: SubjectUpsertWithWhereUniqueWithoutAcademicYearInput | SubjectUpsertWithWhereUniqueWithoutAcademicYearInput[]
-    createMany?: SubjectCreateManyAcademicYearInputEnvelope
     set?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     disconnect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     delete?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
@@ -25606,6 +25756,19 @@ export namespace Prisma {
     update?: SubjectUpdateWithWhereUniqueWithoutAcademicYearInput | SubjectUpdateWithWhereUniqueWithoutAcademicYearInput[]
     updateMany?: SubjectUpdateManyWithWhereWithoutAcademicYearInput | SubjectUpdateManyWithWhereWithoutAcademicYearInput[]
     deleteMany?: SubjectScalarWhereInput | SubjectScalarWhereInput[]
+  }
+
+  export type BranchUpdateManyWithoutYearsNestedInput = {
+    create?: XOR<BranchCreateWithoutYearsInput, BranchUncheckedCreateWithoutYearsInput> | BranchCreateWithoutYearsInput[] | BranchUncheckedCreateWithoutYearsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutYearsInput | BranchCreateOrConnectWithoutYearsInput[]
+    upsert?: BranchUpsertWithWhereUniqueWithoutYearsInput | BranchUpsertWithWhereUniqueWithoutYearsInput[]
+    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    update?: BranchUpdateWithWhereUniqueWithoutYearsInput | BranchUpdateWithWhereUniqueWithoutYearsInput[]
+    updateMany?: BranchUpdateManyWithWhereWithoutYearsInput | BranchUpdateManyWithWhereWithoutYearsInput[]
+    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
   }
 
   export type BookUncheckedUpdateManyWithoutAcademicYearNestedInput = {
@@ -25626,7 +25789,6 @@ export namespace Prisma {
     create?: XOR<SubjectCreateWithoutAcademicYearInput, SubjectUncheckedCreateWithoutAcademicYearInput> | SubjectCreateWithoutAcademicYearInput[] | SubjectUncheckedCreateWithoutAcademicYearInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutAcademicYearInput | SubjectCreateOrConnectWithoutAcademicYearInput[]
     upsert?: SubjectUpsertWithWhereUniqueWithoutAcademicYearInput | SubjectUpsertWithWhereUniqueWithoutAcademicYearInput[]
-    createMany?: SubjectCreateManyAcademicYearInputEnvelope
     set?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     disconnect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     delete?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
@@ -25634,6 +25796,25 @@ export namespace Prisma {
     update?: SubjectUpdateWithWhereUniqueWithoutAcademicYearInput | SubjectUpdateWithWhereUniqueWithoutAcademicYearInput[]
     updateMany?: SubjectUpdateManyWithWhereWithoutAcademicYearInput | SubjectUpdateManyWithWhereWithoutAcademicYearInput[]
     deleteMany?: SubjectScalarWhereInput | SubjectScalarWhereInput[]
+  }
+
+  export type BranchUncheckedUpdateManyWithoutYearsNestedInput = {
+    create?: XOR<BranchCreateWithoutYearsInput, BranchUncheckedCreateWithoutYearsInput> | BranchCreateWithoutYearsInput[] | BranchUncheckedCreateWithoutYearsInput[]
+    connectOrCreate?: BranchCreateOrConnectWithoutYearsInput | BranchCreateOrConnectWithoutYearsInput[]
+    upsert?: BranchUpsertWithWhereUniqueWithoutYearsInput | BranchUpsertWithWhereUniqueWithoutYearsInput[]
+    set?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    disconnect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    delete?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    connect?: BranchWhereUniqueInput | BranchWhereUniqueInput[]
+    update?: BranchUpdateWithWhereUniqueWithoutYearsInput | BranchUpdateWithWhereUniqueWithoutYearsInput[]
+    updateMany?: BranchUpdateManyWithWhereWithoutYearsInput | BranchUpdateManyWithWhereWithoutYearsInput[]
+    deleteMany?: BranchScalarWhereInput | BranchScalarWhereInput[]
+  }
+
+  export type AcademicYearCreateNestedManyWithoutBranchsInput = {
+    create?: XOR<AcademicYearCreateWithoutBranchsInput, AcademicYearUncheckedCreateWithoutBranchsInput> | AcademicYearCreateWithoutBranchsInput[] | AcademicYearUncheckedCreateWithoutBranchsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutBranchsInput | AcademicYearCreateOrConnectWithoutBranchsInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
   }
 
   export type UserCreateNestedManyWithoutBranchInput = {
@@ -25653,8 +25834,13 @@ export namespace Prisma {
   export type SubjectCreateNestedManyWithoutBranchInput = {
     create?: XOR<SubjectCreateWithoutBranchInput, SubjectUncheckedCreateWithoutBranchInput> | SubjectCreateWithoutBranchInput[] | SubjectUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutBranchInput | SubjectCreateOrConnectWithoutBranchInput[]
-    createMany?: SubjectCreateManyBranchInputEnvelope
     connect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
+  }
+
+  export type AcademicYearUncheckedCreateNestedManyWithoutBranchsInput = {
+    create?: XOR<AcademicYearCreateWithoutBranchsInput, AcademicYearUncheckedCreateWithoutBranchsInput> | AcademicYearCreateWithoutBranchsInput[] | AcademicYearUncheckedCreateWithoutBranchsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutBranchsInput | AcademicYearCreateOrConnectWithoutBranchsInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
   }
 
   export type UserUncheckedCreateNestedManyWithoutBranchInput = {
@@ -25674,8 +25860,20 @@ export namespace Prisma {
   export type SubjectUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<SubjectCreateWithoutBranchInput, SubjectUncheckedCreateWithoutBranchInput> | SubjectCreateWithoutBranchInput[] | SubjectUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutBranchInput | SubjectCreateOrConnectWithoutBranchInput[]
-    createMany?: SubjectCreateManyBranchInputEnvelope
     connect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
+  }
+
+  export type AcademicYearUpdateManyWithoutBranchsNestedInput = {
+    create?: XOR<AcademicYearCreateWithoutBranchsInput, AcademicYearUncheckedCreateWithoutBranchsInput> | AcademicYearCreateWithoutBranchsInput[] | AcademicYearUncheckedCreateWithoutBranchsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutBranchsInput | AcademicYearCreateOrConnectWithoutBranchsInput[]
+    upsert?: AcademicYearUpsertWithWhereUniqueWithoutBranchsInput | AcademicYearUpsertWithWhereUniqueWithoutBranchsInput[]
+    set?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    disconnect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    delete?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    update?: AcademicYearUpdateWithWhereUniqueWithoutBranchsInput | AcademicYearUpdateWithWhereUniqueWithoutBranchsInput[]
+    updateMany?: AcademicYearUpdateManyWithWhereWithoutBranchsInput | AcademicYearUpdateManyWithWhereWithoutBranchsInput[]
+    deleteMany?: AcademicYearScalarWhereInput | AcademicYearScalarWhereInput[]
   }
 
   export type UserUpdateManyWithoutBranchNestedInput = {
@@ -25710,7 +25908,6 @@ export namespace Prisma {
     create?: XOR<SubjectCreateWithoutBranchInput, SubjectUncheckedCreateWithoutBranchInput> | SubjectCreateWithoutBranchInput[] | SubjectUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutBranchInput | SubjectCreateOrConnectWithoutBranchInput[]
     upsert?: SubjectUpsertWithWhereUniqueWithoutBranchInput | SubjectUpsertWithWhereUniqueWithoutBranchInput[]
-    createMany?: SubjectCreateManyBranchInputEnvelope
     set?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     disconnect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     delete?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
@@ -25718,6 +25915,19 @@ export namespace Prisma {
     update?: SubjectUpdateWithWhereUniqueWithoutBranchInput | SubjectUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: SubjectUpdateManyWithWhereWithoutBranchInput | SubjectUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: SubjectScalarWhereInput | SubjectScalarWhereInput[]
+  }
+
+  export type AcademicYearUncheckedUpdateManyWithoutBranchsNestedInput = {
+    create?: XOR<AcademicYearCreateWithoutBranchsInput, AcademicYearUncheckedCreateWithoutBranchsInput> | AcademicYearCreateWithoutBranchsInput[] | AcademicYearUncheckedCreateWithoutBranchsInput[]
+    connectOrCreate?: AcademicYearCreateOrConnectWithoutBranchsInput | AcademicYearCreateOrConnectWithoutBranchsInput[]
+    upsert?: AcademicYearUpsertWithWhereUniqueWithoutBranchsInput | AcademicYearUpsertWithWhereUniqueWithoutBranchsInput[]
+    set?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    disconnect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    delete?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    connect?: AcademicYearWhereUniqueInput | AcademicYearWhereUniqueInput[]
+    update?: AcademicYearUpdateWithWhereUniqueWithoutBranchsInput | AcademicYearUpdateWithWhereUniqueWithoutBranchsInput[]
+    updateMany?: AcademicYearUpdateManyWithWhereWithoutBranchsInput | AcademicYearUpdateManyWithWhereWithoutBranchsInput[]
+    deleteMany?: AcademicYearScalarWhereInput | AcademicYearScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutBranchNestedInput = {
@@ -25752,7 +25962,6 @@ export namespace Prisma {
     create?: XOR<SubjectCreateWithoutBranchInput, SubjectUncheckedCreateWithoutBranchInput> | SubjectCreateWithoutBranchInput[] | SubjectUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: SubjectCreateOrConnectWithoutBranchInput | SubjectCreateOrConnectWithoutBranchInput[]
     upsert?: SubjectUpsertWithWhereUniqueWithoutBranchInput | SubjectUpsertWithWhereUniqueWithoutBranchInput[]
-    createMany?: SubjectCreateManyBranchInputEnvelope
     set?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     disconnect?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
     delete?: SubjectWhereUniqueInput | SubjectWhereUniqueInput[]
@@ -26065,6 +26274,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearCreateNestedManyWithoutBranchsInput
     books?: BookCreateNestedManyWithoutBranchInput
     subjects?: SubjectCreateNestedManyWithoutBranchInput
   }
@@ -26074,6 +26284,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearUncheckedCreateNestedManyWithoutBranchsInput
     books?: BookUncheckedCreateNestedManyWithoutBranchInput
     subjects?: SubjectUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -26224,8 +26435,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
     books?: BookCreateNestedManyWithoutSubjectsInput
@@ -26237,13 +26448,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -26268,8 +26479,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
     books?: BookCreateNestedManyWithoutSubjectsInput
@@ -26281,13 +26492,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -26311,8 +26522,8 @@ export namespace Prisma {
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
@@ -26324,14 +26535,14 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -26816,6 +27027,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUpdateManyWithoutBranchsNestedInput
     books?: BookUpdateManyWithoutBranchNestedInput
     subjects?: SubjectUpdateManyWithoutBranchNestedInput
   }
@@ -26825,6 +27037,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUncheckedUpdateManyWithoutBranchsNestedInput
     books?: BookUncheckedUpdateManyWithoutBranchNestedInput
     subjects?: SubjectUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -26920,8 +27133,6 @@ export namespace Prisma {
     name?: StringFilter<"Subject"> | string
     description?: StringNullableFilter<"Subject"> | string | null
     userId?: IntFilter<"Subject"> | number
-    branchId?: IntNullableFilter<"Subject"> | number | null
-    academicYearId?: IntNullableFilter<"Subject"> | number | null
     createdById?: IntNullableFilter<"Subject"> | number | null
     updatedById?: IntNullableFilter<"Subject"> | number | null
     deletedAt?: DateTimeNullableFilter<"Subject"> | Date | string | null
@@ -27559,6 +27770,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearCreateNestedManyWithoutBranchsInput
     users?: UserCreateNestedManyWithoutBranchInput
     subjects?: SubjectCreateNestedManyWithoutBranchInput
   }
@@ -27568,6 +27780,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearUncheckedCreateNestedManyWithoutBranchsInput
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     subjects?: SubjectUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -27579,13 +27792,17 @@ export namespace Prisma {
 
   export type AcademicYearCreateWithoutBooksInput = {
     label: string
+    code: string
     subjects?: SubjectCreateNestedManyWithoutAcademicYearInput
+    branchs?: BranchCreateNestedManyWithoutYearsInput
   }
 
   export type AcademicYearUncheckedCreateWithoutBooksInput = {
     id?: number
     label: string
+    code: string
     subjects?: SubjectUncheckedCreateNestedManyWithoutAcademicYearInput
+    branchs?: BranchUncheckedCreateNestedManyWithoutYearsInput
   }
 
   export type AcademicYearCreateOrConnectWithoutBooksInput = {
@@ -27746,8 +27963,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
@@ -27759,14 +27976,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
   }
@@ -27888,6 +28105,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUpdateManyWithoutBranchsNestedInput
     users?: UserUpdateManyWithoutBranchNestedInput
     subjects?: SubjectUpdateManyWithoutBranchNestedInput
   }
@@ -27897,6 +28115,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUncheckedUpdateManyWithoutBranchsNestedInput
     users?: UserUncheckedUpdateManyWithoutBranchNestedInput
     subjects?: SubjectUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -27914,13 +28133,17 @@ export namespace Prisma {
 
   export type AcademicYearUpdateWithoutBooksInput = {
     label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subjects?: SubjectUpdateManyWithoutAcademicYearNestedInput
+    branchs?: BranchUpdateManyWithoutYearsNestedInput
   }
 
   export type AcademicYearUncheckedUpdateWithoutBooksInput = {
     id?: IntFieldUpdateOperationsInput | number
     label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     subjects?: SubjectUncheckedUpdateManyWithoutAcademicYearNestedInput
+    branchs?: BranchUncheckedUpdateManyWithoutYearsNestedInput
   }
 
   export type UserUpsertWithoutCreatedBooksInput = {
@@ -28196,6 +28419,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearCreateNestedManyWithoutBranchsInput
     users?: UserCreateNestedManyWithoutBranchInput
     books?: BookCreateNestedManyWithoutBranchInput
   }
@@ -28205,6 +28429,7 @@ export namespace Prisma {
     name: string
     location?: string | null
     createdAt?: Date | string
+    years?: AcademicYearUncheckedCreateNestedManyWithoutBranchsInput
     users?: UserUncheckedCreateNestedManyWithoutBranchInput
     books?: BookUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -28216,13 +28441,17 @@ export namespace Prisma {
 
   export type AcademicYearCreateWithoutSubjectsInput = {
     label: string
+    code: string
     books?: BookCreateNestedManyWithoutAcademicYearInput
+    branchs?: BranchCreateNestedManyWithoutYearsInput
   }
 
   export type AcademicYearUncheckedCreateWithoutSubjectsInput = {
     id?: number
     label: string
+    code: string
     books?: BookUncheckedCreateNestedManyWithoutAcademicYearInput
+    branchs?: BranchUncheckedCreateNestedManyWithoutYearsInput
   }
 
   export type AcademicYearCreateOrConnectWithoutSubjectsInput = {
@@ -28534,54 +28763,55 @@ export namespace Prisma {
     updatedWhiteListedUrls?: WhitelistedUrlUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
-  export type BranchUpsertWithoutSubjectsInput = {
+  export type BranchUpsertWithWhereUniqueWithoutSubjectsInput = {
+    where: BranchWhereUniqueInput
     update: XOR<BranchUpdateWithoutSubjectsInput, BranchUncheckedUpdateWithoutSubjectsInput>
     create: XOR<BranchCreateWithoutSubjectsInput, BranchUncheckedCreateWithoutSubjectsInput>
-    where?: BranchWhereInput
   }
 
-  export type BranchUpdateToOneWithWhereWithoutSubjectsInput = {
-    where?: BranchWhereInput
+  export type BranchUpdateWithWhereUniqueWithoutSubjectsInput = {
+    where: BranchWhereUniqueInput
     data: XOR<BranchUpdateWithoutSubjectsInput, BranchUncheckedUpdateWithoutSubjectsInput>
   }
 
-  export type BranchUpdateWithoutSubjectsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUpdateManyWithoutBranchNestedInput
-    books?: BookUpdateManyWithoutBranchNestedInput
+  export type BranchUpdateManyWithWhereWithoutSubjectsInput = {
+    where: BranchScalarWhereInput
+    data: XOR<BranchUpdateManyMutationInput, BranchUncheckedUpdateManyWithoutSubjectsInput>
   }
 
-  export type BranchUncheckedUpdateWithoutSubjectsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
-    books?: BookUncheckedUpdateManyWithoutBranchNestedInput
+  export type BranchScalarWhereInput = {
+    AND?: BranchScalarWhereInput | BranchScalarWhereInput[]
+    OR?: BranchScalarWhereInput[]
+    NOT?: BranchScalarWhereInput | BranchScalarWhereInput[]
+    id?: IntFilter<"Branch"> | number
+    name?: StringFilter<"Branch"> | string
+    location?: StringNullableFilter<"Branch"> | string | null
+    createdAt?: DateTimeFilter<"Branch"> | Date | string
   }
 
-  export type AcademicYearUpsertWithoutSubjectsInput = {
+  export type AcademicYearUpsertWithWhereUniqueWithoutSubjectsInput = {
+    where: AcademicYearWhereUniqueInput
     update: XOR<AcademicYearUpdateWithoutSubjectsInput, AcademicYearUncheckedUpdateWithoutSubjectsInput>
     create: XOR<AcademicYearCreateWithoutSubjectsInput, AcademicYearUncheckedCreateWithoutSubjectsInput>
-    where?: AcademicYearWhereInput
   }
 
-  export type AcademicYearUpdateToOneWithWhereWithoutSubjectsInput = {
-    where?: AcademicYearWhereInput
+  export type AcademicYearUpdateWithWhereUniqueWithoutSubjectsInput = {
+    where: AcademicYearWhereUniqueInput
     data: XOR<AcademicYearUpdateWithoutSubjectsInput, AcademicYearUncheckedUpdateWithoutSubjectsInput>
   }
 
-  export type AcademicYearUpdateWithoutSubjectsInput = {
-    label?: StringFieldUpdateOperationsInput | string
-    books?: BookUpdateManyWithoutAcademicYearNestedInput
+  export type AcademicYearUpdateManyWithWhereWithoutSubjectsInput = {
+    where: AcademicYearScalarWhereInput
+    data: XOR<AcademicYearUpdateManyMutationInput, AcademicYearUncheckedUpdateManyWithoutSubjectsInput>
   }
 
-  export type AcademicYearUncheckedUpdateWithoutSubjectsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    label?: StringFieldUpdateOperationsInput | string
-    books?: BookUncheckedUpdateManyWithoutAcademicYearNestedInput
+  export type AcademicYearScalarWhereInput = {
+    AND?: AcademicYearScalarWhereInput | AcademicYearScalarWhereInput[]
+    OR?: AcademicYearScalarWhereInput[]
+    NOT?: AcademicYearScalarWhereInput | AcademicYearScalarWhereInput[]
+    id?: IntFilter<"AcademicYear"> | number
+    label?: StringFilter<"AcademicYear"> | string
+    code?: StringFilter<"AcademicYear"> | string
   }
 
   export type UserUpsertWithoutCreatedSubjectsInput = {
@@ -28847,8 +29077,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
@@ -28860,14 +29090,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
   }
@@ -28942,8 +29172,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
@@ -28955,14 +29185,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
   }
@@ -29276,8 +29506,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     books?: BookCreateNestedManyWithoutSubjectsInput
@@ -29289,14 +29519,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
   }
@@ -29326,8 +29556,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     books?: BookUpdateManyWithoutSubjectsNestedInput
@@ -29339,14 +29569,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
   }
@@ -29954,7 +30184,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    branch?: BranchCreateNestedOneWithoutSubjectsInput
+    branch?: BranchCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
@@ -29967,13 +30197,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -29984,9 +30214,28 @@ export namespace Prisma {
     create: XOR<SubjectCreateWithoutAcademicYearInput, SubjectUncheckedCreateWithoutAcademicYearInput>
   }
 
-  export type SubjectCreateManyAcademicYearInputEnvelope = {
-    data: SubjectCreateManyAcademicYearInput | SubjectCreateManyAcademicYearInput[]
-    skipDuplicates?: boolean
+  export type BranchCreateWithoutYearsInput = {
+    name: string
+    location?: string | null
+    createdAt?: Date | string
+    users?: UserCreateNestedManyWithoutBranchInput
+    books?: BookCreateNestedManyWithoutBranchInput
+    subjects?: SubjectCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutYearsInput = {
+    id?: number
+    name: string
+    location?: string | null
+    createdAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutBranchInput
+    books?: BookUncheckedCreateNestedManyWithoutBranchInput
+    subjects?: SubjectUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutYearsInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutYearsInput, BranchUncheckedCreateWithoutYearsInput>
   }
 
   export type BookUpsertWithWhereUniqueWithoutAcademicYearInput = {
@@ -30019,6 +30268,42 @@ export namespace Prisma {
   export type SubjectUpdateManyWithWhereWithoutAcademicYearInput = {
     where: SubjectScalarWhereInput
     data: XOR<SubjectUpdateManyMutationInput, SubjectUncheckedUpdateManyWithoutAcademicYearInput>
+  }
+
+  export type BranchUpsertWithWhereUniqueWithoutYearsInput = {
+    where: BranchWhereUniqueInput
+    update: XOR<BranchUpdateWithoutYearsInput, BranchUncheckedUpdateWithoutYearsInput>
+    create: XOR<BranchCreateWithoutYearsInput, BranchUncheckedCreateWithoutYearsInput>
+  }
+
+  export type BranchUpdateWithWhereUniqueWithoutYearsInput = {
+    where: BranchWhereUniqueInput
+    data: XOR<BranchUpdateWithoutYearsInput, BranchUncheckedUpdateWithoutYearsInput>
+  }
+
+  export type BranchUpdateManyWithWhereWithoutYearsInput = {
+    where: BranchScalarWhereInput
+    data: XOR<BranchUpdateManyMutationInput, BranchUncheckedUpdateManyWithoutYearsInput>
+  }
+
+  export type AcademicYearCreateWithoutBranchsInput = {
+    label: string
+    code: string
+    books?: BookCreateNestedManyWithoutAcademicYearInput
+    subjects?: SubjectCreateNestedManyWithoutAcademicYearInput
+  }
+
+  export type AcademicYearUncheckedCreateWithoutBranchsInput = {
+    id?: number
+    label: string
+    code: string
+    books?: BookUncheckedCreateNestedManyWithoutAcademicYearInput
+    subjects?: SubjectUncheckedCreateNestedManyWithoutAcademicYearInput
+  }
+
+  export type AcademicYearCreateOrConnectWithoutBranchsInput = {
+    where: AcademicYearWhereUniqueInput
+    create: XOR<AcademicYearCreateWithoutBranchsInput, AcademicYearUncheckedCreateWithoutBranchsInput>
   }
 
   export type UserCreateWithoutBranchInput = {
@@ -30151,7 +30436,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubjectsInput
-    academicYear?: AcademicYearCreateNestedOneWithoutSubjectsInput
+    academicYear?: AcademicYearCreateNestedManyWithoutSubjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedSubjectsInput
     updatedBy?: UserCreateNestedOneWithoutUpdatedSubjectsInput
     chapters?: ChapterCreateNestedManyWithoutSubjectInput
@@ -30164,13 +30449,13 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    academicYear?: AcademicYearUncheckedCreateNestedManyWithoutSubjectsInput
     chapters?: ChapterUncheckedCreateNestedManyWithoutSubjectInput
     books?: BookUncheckedCreateNestedManyWithoutSubjectsInput
     bookSubjects?: BookSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -30181,9 +30466,20 @@ export namespace Prisma {
     create: XOR<SubjectCreateWithoutBranchInput, SubjectUncheckedCreateWithoutBranchInput>
   }
 
-  export type SubjectCreateManyBranchInputEnvelope = {
-    data: SubjectCreateManyBranchInput | SubjectCreateManyBranchInput[]
-    skipDuplicates?: boolean
+  export type AcademicYearUpsertWithWhereUniqueWithoutBranchsInput = {
+    where: AcademicYearWhereUniqueInput
+    update: XOR<AcademicYearUpdateWithoutBranchsInput, AcademicYearUncheckedUpdateWithoutBranchsInput>
+    create: XOR<AcademicYearCreateWithoutBranchsInput, AcademicYearUncheckedCreateWithoutBranchsInput>
+  }
+
+  export type AcademicYearUpdateWithWhereUniqueWithoutBranchsInput = {
+    where: AcademicYearWhereUniqueInput
+    data: XOR<AcademicYearUpdateWithoutBranchsInput, AcademicYearUncheckedUpdateWithoutBranchsInput>
+  }
+
+  export type AcademicYearUpdateManyWithWhereWithoutBranchsInput = {
+    where: AcademicYearScalarWhereInput
+    data: XOR<AcademicYearUpdateManyMutationInput, AcademicYearUncheckedUpdateManyWithoutBranchsInput>
   }
 
   export type UserUpsertWithWhereUniqueWithoutBranchInput = {
@@ -31034,8 +31330,6 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
@@ -31048,8 +31342,6 @@ export namespace Prisma {
     name: string
     description?: string | null
     userId: number
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     deletedAt?: Date | string | null
     isDeleted?: boolean
@@ -31061,8 +31353,6 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    branchId?: number | null
-    academicYearId?: number | null
     createdById?: number | null
     updatedById?: number | null
     deletedAt?: Date | string | null
@@ -31335,8 +31625,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
     books?: BookUpdateManyWithoutSubjectsNestedInput
@@ -31348,13 +31638,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -31365,8 +31655,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
@@ -31383,8 +31671,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
     books?: BookUpdateManyWithoutSubjectsNestedInput
@@ -31396,13 +31684,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -31413,8 +31701,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
@@ -31430,8 +31716,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
@@ -31443,14 +31729,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -31460,8 +31746,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31980,8 +32264,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
@@ -31993,14 +32277,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
   }
@@ -32010,8 +32294,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -32044,6 +32326,53 @@ export namespace Prisma {
   export type BookSubjectCreateManySubjectInput = {
     id?: number
     bookId: string
+  }
+
+  export type BranchUpdateWithoutSubjectsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUpdateManyWithoutBranchsNestedInput
+    users?: UserUpdateManyWithoutBranchNestedInput
+    books?: BookUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutSubjectsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    years?: AcademicYearUncheckedUpdateManyWithoutBranchsNestedInput
+    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
+    books?: BookUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateManyWithoutSubjectsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicYearUpdateWithoutSubjectsInput = {
+    label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    books?: BookUpdateManyWithoutAcademicYearNestedInput
+    branchs?: BranchUpdateManyWithoutYearsNestedInput
+  }
+
+  export type AcademicYearUncheckedUpdateWithoutSubjectsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    books?: BookUncheckedUpdateManyWithoutAcademicYearNestedInput
+    branchs?: BranchUncheckedUpdateManyWithoutYearsNestedInput
+  }
+
+  export type AcademicYearUncheckedUpdateManyWithoutSubjectsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
   }
 
   export type ChapterUpdateWithoutSubjectInput = {
@@ -32165,20 +32494,6 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type SubjectCreateManyAcademicYearInput = {
-    id?: string
-    name: string
-    description?: string | null
-    userId: number
-    branchId?: number | null
-    createdById?: number | null
-    updatedById?: number | null
-    deletedAt?: Date | string | null
-    isDeleted?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type BookUpdateWithoutAcademicYearInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -32237,7 +32552,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    branch?: BranchUpdateOneWithoutSubjectsNestedInput
+    branch?: BranchUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
@@ -32250,13 +32565,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -32267,13 +32582,38 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    branchId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchUpdateWithoutYearsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutBranchNestedInput
+    books?: BookUpdateManyWithoutBranchNestedInput
+    subjects?: SubjectUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutYearsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutBranchNestedInput
+    books?: BookUncheckedUpdateManyWithoutBranchNestedInput
+    subjects?: SubjectUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateManyWithoutYearsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateManyBranchInput = {
@@ -32308,18 +32648,25 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type SubjectCreateManyBranchInput = {
-    id?: string
-    name: string
-    description?: string | null
-    userId: number
-    academicYearId?: number | null
-    createdById?: number | null
-    updatedById?: number | null
-    deletedAt?: Date | string | null
-    isDeleted?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AcademicYearUpdateWithoutBranchsInput = {
+    label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    books?: BookUpdateManyWithoutAcademicYearNestedInput
+    subjects?: SubjectUpdateManyWithoutAcademicYearNestedInput
+  }
+
+  export type AcademicYearUncheckedUpdateWithoutBranchsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    books?: BookUncheckedUpdateManyWithoutAcademicYearNestedInput
+    subjects?: SubjectUncheckedUpdateManyWithoutAcademicYearNestedInput
+  }
+
+  export type AcademicYearUncheckedUpdateManyWithoutBranchsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUpdateWithoutBranchInput = {
@@ -32464,7 +32811,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubjectsNestedInput
-    academicYear?: AcademicYearUpdateOneWithoutSubjectsNestedInput
+    academicYear?: AcademicYearUpdateManyWithoutSubjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedSubjectsNestedInput
     updatedBy?: UserUpdateOneWithoutUpdatedSubjectsNestedInput
     chapters?: ChapterUpdateManyWithoutSubjectNestedInput
@@ -32477,13 +32824,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicYear?: AcademicYearUncheckedUpdateManyWithoutSubjectsNestedInput
     chapters?: ChapterUncheckedUpdateManyWithoutSubjectNestedInput
     books?: BookUncheckedUpdateManyWithoutSubjectsNestedInput
     bookSubjects?: BookSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -32494,7 +32841,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: IntFieldUpdateOperationsInput | number
-    academicYearId?: NullableIntFieldUpdateOperationsInput | number | null
     createdById?: NullableIntFieldUpdateOperationsInput | number | null
     updatedById?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

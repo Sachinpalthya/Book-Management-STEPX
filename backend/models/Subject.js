@@ -11,7 +11,6 @@ const SubjectSchema = new mongoose.Schema({
   year: {
     type: String,
     required: true,
-    enum: ['1st', '2nd', 'Masters']
   },
   book: {
     type: mongoose.Schema.Types.ObjectId,

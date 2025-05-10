@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { getToken } from '../utils/storage';
 
-const baseURL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = 'http://localhost:5000/api';
 
 const axiosInstance = axios.create({
-  baseURL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
 });
 
 // Add a request interceptor to include auth token

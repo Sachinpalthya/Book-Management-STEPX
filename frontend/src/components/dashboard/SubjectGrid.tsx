@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import SubjectCard from './SubjectCard';
 import Button from '../common/Button';
 import { Upload } from 'lucide-react';
-import { SUBJECT_LIST, SUBJECT_COLORS, YearType } from '../../types/subject';
+import { SUBJECT_LIST, SUBJECT_COLORS } from '../../types/subject';
 import UploadSubjectPDF from './UploadSubjectPDF';
 
 interface SubjectGridProps {
-  year: YearType;
+  year: string;
 }
 
 const SubjectGrid: React.FC<SubjectGridProps> = ({ year }) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
   
   const handleUploadSuccess = (data: any) => {
     // Handle successful upload

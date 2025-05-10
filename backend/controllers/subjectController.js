@@ -101,8 +101,8 @@ const createSubject = async (req, res) => {
       data: {
         name,
         description,
-        branchId: branchId ? parseInt(branchId) : null,
-        academicYearId: academicYearId ? parseInt(academicYearId) : null,
+        // branchId: branchId ? parseInt(branchId) : null,
+        // academicYearId: academicYearId ? parseInt(academicYearId) : null,
         userId: req.user.id,
         createdById: req.user.id,
         updatedById: req.user.id,
@@ -113,18 +113,14 @@ const createSubject = async (req, res) => {
         } : undefined
       },
       include: {
-        branch: true,
-        academicYear: true,
-        books: {
-          include: {
-            book: true
-          }
-        }
+        // branch: true,
+        // academicYear: true
       }
     });
 
     res.status(201).json(subject);
   } catch (error) {
+    console.log(error); 
     res.status(500).json({ error: 'Server error' });
   }
 };

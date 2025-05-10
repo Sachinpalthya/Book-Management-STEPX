@@ -1,8 +1,8 @@
 import axiosInstance from './axiosInstance';
 import { Subject, CreateSubjectPayload } from '../types/subject';
 
-export const getSubjects = async (): Promise<Subject[]> => {
-  const response = await axiosInstance.get('/subjects');
+export const getSubjects = async (params?: { branchId?: string; academicYearId?: string }): Promise<Subject[]> => {
+  const response = await axiosInstance.get('/subjects', { params });
   return response.data;
 };
 
@@ -16,6 +16,15 @@ export const getSubjectsByYear = async (year: string): Promise<Subject[]> => {
 export const createSubject = async (subjectData: CreateSubjectPayload): Promise<Subject> => {
   const response = await axiosInstance.post('/subjects', subjectData);
   return response.data;
+};
+
+export const updateSubject = async (id: string, subjectData: CreateSubjectPayload): Promise<Subject> => {
+  const response = await axiosInstance.put(`/subjects/${id}`, subjectData);
+  return response.data;
+};
+
+export const deleteSubject = async (id: string): Promise<void> => {
+  await axiosInstance.delete(`/subjects/${id}`);
 };
 
 export const uploadSubjectFile = async (formData: FormData) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   BookOpen, 
@@ -6,7 +6,9 @@ import {
   Book, 
   LogOut 
 } from 'lucide-react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
+import { getAcademicYears } from '../../api/academicYears';
+import { AcademicYear } from '../../types/academicYear';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,6 +17,23 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { logout } = useAuth();
+  const [academicYears, setAcademicYears] = useState<AcademicYear[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAcademicYears = async () => {
+      try {
+        const years = await getAcademicYears();
+        console.log(years);
+        setAcademicYears(years);
+      } catch (error) {
+        // Optionally handle error
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAcademicYears();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -50,37 +69,29 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Academic Years
               </div>
-              
-              <NavLink
-                to="/dashboard/1st"
-                className={({ isActive }) =>
-                  `${
-                    isActive
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  } group flex items-center px-3 py-2 text-sm font-medium rounded-md`
-                }
-                onClick={() => onClose()}
-              >
-                <Book className="mr-3 h-5 w-5 text-gray-500" />
-                1st Year
-              </NavLink>
-              
-              <NavLink
-                to="/dashboard/2nd"
-                className={({ isActive }) =>
-                  `${
-                    isActive
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  } group flex items-center px-3 py-2 text-sm font-medium rounded-md`
-                }
-                onClick={() => onClose()}
-              >
-                <Book className="mr-3 h-5 w-5 text-gray-500" />
-                2nd Year
-              </NavLink>
-              
+              {/* Dynamically render academic years */}
+              {loading ? (
+                <div className="px-3 py-2 text-gray-400 text-sm">Loading...</div>
+              ) : (
+                (academicYears??[]).map((year) => (
+                  <NavLink
+                    key={year.id}
+                    to={`/dashboard/${year.code.replace(/\\s+/g, '-')}`}
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? 'bg-blue-50 text-blue-600'
+                          : 'text-gray-700 hover:bg-gray-50'
+                      } group flex items-center px-3 py-2 text-sm font-medium rounded-md`
+                    }
+                    onClick={() => onClose()}
+                  >
+                    <Book className="mr-3 h-5 w-5 text-gray-500" />
+                    {year.label}
+                  </NavLink>
+                ))
+              )}
+              {/* Masters link remains static */}
               <NavLink
                 to="/dashboard/masters"
                 className={({ isActive }) =>

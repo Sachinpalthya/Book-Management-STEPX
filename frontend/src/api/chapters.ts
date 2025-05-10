@@ -1,6 +1,26 @@
 import axiosInstance from './axiosInstance';
 import { Chapter, CreateChapterPayload, AddSubQRPayload } from '../types/chapter';
 
+export const getChapters = async (params?: { subjectId?: string; bookId?: string }): Promise<Chapter[]> => {
+  try {
+    const response = await axiosInstance.get('/chapters', { params });
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching chapters:', error);
+    throw error.response?.data || error;
+  }
+};
+
+export const getChapterById = async (id: string): Promise<Chapter> => {
+  try {
+    const response = await axiosInstance.get(`/chapters/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching chapter:', error);
+    throw error.response?.data || error;
+  }
+};
+
 export const getChaptersBySubject = async (subjectId: string): Promise<Chapter[]> => {
   try {
     const response = await axiosInstance.get('/chapters', {
@@ -19,6 +39,16 @@ export const createChapter = async (chapterData: CreateChapterPayload): Promise<
     return response.data;
   } catch (error: any) {
     console.error('Error creating chapter:', error);
+    throw error.response?.data || error;
+  }
+};
+
+export const updateChapter = async (id: string, chapterData: CreateChapterPayload): Promise<Chapter> => {
+  try {
+    const response = await axiosInstance.put(`/chapters/${id}`, chapterData);
+    return response.data;
+  } catch (error: any) {
+    console.error('Error updating chapter:', error);
     throw error.response?.data || error;
   }
 };
@@ -81,5 +111,15 @@ export const createChaptersFromPDF = async (
       details: error.response?.data?.details || error.message,
       chapters: []
     };
+  }
+};
+
+export const getChapterByQRCode = async (qrCode: string): Promise<Chapter> => {
+  try {
+    const response = await axiosInstance.get(`/chapters/qr/${qrCode}`);
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching chapter by QR code:', error);
+    throw error.response?.data || error;
   }
 };

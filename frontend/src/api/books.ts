@@ -1,14 +1,28 @@
 import axiosInstance from './axiosInstance';
 import { Book, CreateBookPayload, UploadPDFResponse } from '../types/book';
 
-export const getBooks = async (): Promise<Book[]> => {
-  const response = await axiosInstance.get('/books');
+export const getBooks = async (params?: { subjectId?: string; branchId?: string; academicYearId?: string }): Promise<Book[]> => {
+  const response = await axiosInstance.get('/books', { params });
+  return response.data;
+};
+
+export const getBookById = async (id: string): Promise<Book> => {
+  const response = await axiosInstance.get(`/books/${id}`);
   return response.data;
 };
 
 export const createBook = async (bookData: CreateBookPayload): Promise<Book> => {
   const response = await axiosInstance.post('/books', bookData);
   return response.data;
+};
+
+export const updateBook = async (id: string, bookData: CreateBookPayload): Promise<Book> => {
+  const response = await axiosInstance.put(`/books/${id}`, bookData);
+  return response.data;
+};
+
+export const deleteBook = async (id: string): Promise<void> => {
+  await axiosInstance.delete(`/books/${id}`);
 };
 
 export const uploadSubjectPDF = async (

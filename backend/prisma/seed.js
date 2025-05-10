@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require('../generated/prisma');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
@@ -69,7 +69,7 @@ async function main() {
   // Create default admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
   await prisma.user.upsert({
-    where: { phone: 'admin@example.com' },
+    where: { phone: '1234567890' },
     update: {},
     create: {
       name: 'Admin User',
@@ -85,20 +85,82 @@ async function main() {
 
   // Create default academic year
   await prisma.academicYear.upsert({
-    where: { label: '2024' },
+    where: {  code:'1_year' },
     update: {},
     create: {
-      label: '2024'
+      label: '1st year',
+      code:'1_year'
+    }
+  });
+  // Create default academic year
+  await prisma.academicYear.upsert({
+    where: {  code:'2_year' },
+    update: {},
+    create: {
+      label: '2nd year',
+      code:'2_year'
     }
   });
 
   // Create default branch
   await prisma.branch.upsert({
-    where: { name: 'Computer Science' },
+    where: { name: 'MPC' },
     update: {},
     create: {
-      name: 'Computer Science',
-      location: 'Main Campus'
+      name: 'MPC',
+      location: 'Main Campus',
+      years:{
+        connect: [
+          { code: '1_year' },  
+          { code: '2_year' },  
+        ]
+      }
+    }
+  });
+
+
+  await prisma.branch.upsert({
+    where: { name: 'BIPC' },
+    update: {},
+    create: {
+      name: 'BIPC',
+      location: 'Main Campus',
+      years:{
+        connect: [
+          { code: '1_year' },  
+          { code: '2_year' },  
+        ]
+      }
+    }
+  });
+
+
+  await prisma.branch.upsert({
+    where: { name: 'MEC' },
+    update: {},
+    create: {
+      name: 'MEC',
+      location: 'Main Campus',
+      years:{
+        connect: [
+          { code: '1_year' },  
+          { code: '2_year' },  
+        ]
+      }
+    }
+  });
+  await prisma.branch.upsert({
+    where: { name: 'CEC' },
+    update: {},
+    create: {
+      name: 'CEC',
+      location: 'Main Campus',
+      years:{
+        connect: [
+          { code: '1_year' },  
+          { code: '2_year' },  
+        ]
+      }
     }
   });
 

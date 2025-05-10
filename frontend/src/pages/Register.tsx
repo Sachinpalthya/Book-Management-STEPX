@@ -1,14 +1,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
-import RegisterForm from '../components/auth/RegisterForm';
-import { useAuth } from '../hooks/useAuth';
+import RegisterForm from '../components/Auth/RegisterForm';
+import { useAuth } from '../contexts/AuthContext';
 
 const Register: React.FC = () => {
-  const { state } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  if (state.isAuthenticated) {
-    return <Navigate to="/dashboard/1st" replace />;
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (

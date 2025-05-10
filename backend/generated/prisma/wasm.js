@@ -172,8 +172,6 @@ exports.Prisma.SubjectScalarFieldEnum = {
   name: 'name',
   description: 'description',
   userId: 'userId',
-  branchId: 'branchId',
-  academicYearId: 'academicYearId',
   createdById: 'createdById',
   updatedById: 'updatedById',
   deletedAt: 'deletedAt',
@@ -224,7 +222,8 @@ exports.Prisma.RedirectScalarFieldEnum = {
 
 exports.Prisma.AcademicYearScalarFieldEnum = {
   id: 'id',
-  label: 'label'
+  label: 'label',
+  code: 'code'
 };
 
 exports.Prisma.BranchScalarFieldEnum = {

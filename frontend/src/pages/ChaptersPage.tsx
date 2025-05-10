@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   getChaptersBySubject,
   createChapter, 
@@ -30,7 +30,7 @@ type ChapterPageParams = {
 };
 
 const ChaptersPage: React.FC = () => {
-  const { state } = useAuth();
+  const { state ,isAuthenticated} = useAuth();
   const queryClient = useQueryClient();
   const { year, subject, subjectId } = useParams<ChapterPageParams>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -131,7 +131,7 @@ const ChaptersPage: React.FC = () => {
     }
   );
 
-  if (!state.isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 

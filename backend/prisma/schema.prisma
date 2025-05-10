@@ -18,7 +18,7 @@ model User {
   id           Int       @id @default(autoincrement())
   role         UserRole? @relation(fields: [roleId], references: [roleId])
   roleId       Int?
-  name         String    @unique
+  name         String    
   email        String?
   phone        String    @unique
   password     String
@@ -113,16 +113,16 @@ model Subject {
   name           String
   description    String?
   userId         Int
-  branchId       Int?
-  academicYearId Int?
+  // branchId       Int?
+  // academicYearId Int?
   createdById    Int?
   updatedById    Int?
   deletedAt      DateTime?
   isDeleted      Boolean   @default(false)
 
   user         User          @relation(fields: [userId], references: [id])
-  branch       Branch?       @relation(fields: [branchId], references: [id])
-  academicYear AcademicYear? @relation(fields: [academicYearId], references: [id])
+  branch       Branch[]      
+  academicYear AcademicYear[]
   createdBy    User?         @relation("SubjectCreatedBy", fields: [createdById], references: [id])
   updatedBy    User?         @relation("SubjectUpdatedBy", fields: [updatedById], references: [id])
   chapters     Chapter[]
@@ -133,8 +133,8 @@ model Subject {
   updatedAt DateTime @default(now()) @updatedAt
 
   @@index([userId])
-  @@index([branchId])
-  @@index([academicYearId])
+  // @@index([branchId])
+  // @@index([academicYearId])
   @@index([isDeleted])
   @@map("subjects")
 }
@@ -201,9 +201,11 @@ model Redirect {
 
 model AcademicYear {
   id       Int       @id @default(autoincrement())
-  label    String    @unique // e.g., "2024", "2023-2024"
+  label    String    
+  code       String @unique
   books    Book[]
   subjects Subject[]
+  branchs   Branch[]
 }
 
 model Branch {
@@ -211,7 +213,7 @@ model Branch {
   name      String   @unique
   location  String?
   createdAt DateTime @default(now())
-
+  years    AcademicYear[]
   users    User[]
   books    Book[]
   subjects Subject[]

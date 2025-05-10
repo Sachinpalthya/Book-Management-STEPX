@@ -5,13 +5,15 @@ const prisma = require('../utils/prisma');
 // @access  Private
 const getBranches = async (req, res) => {
   try {
-    const { academicYearId } = req.query;
+    const { academicYearcode } = req.query;
     
     const where = {};
-    if (academicYearId) {
-      where.books = {
+    if (academicYearcode) {
+      where.years = {
         some: {
-          academicYearId: parseInt(academicYearId)
+          
+            code:academicYearcode
+          
         }
       };
     }
@@ -19,19 +21,20 @@ const getBranches = async (req, res) => {
     const branches = await prisma.branch.findMany({
       where,
       include: {
-        _count: {
-          select: {
-            books: true,
-            subjects: true,
-            users: true
-          }
-        }
+        // _count: {
+        //   select: {
+        //     books: true,
+        //     subjects: true,
+        //     users: true
+        //   }
+        // }
       },
       orderBy: { name: 'asc' }
     });
 
     res.json(branches);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -41,7 +44,7 @@ const getBranches = async (req, res) => {
 // @access  Private (Admin only)
 const createBranch = async (req, res) => {
   try {
-    const { name, location } = req.body;
+    const { name, location, academicYearIds } = req.body;
 
     const existingBranch = await prisma.branch.findUnique({
       where: { name }
@@ -55,13 +58,18 @@ const createBranch = async (req, res) => {
       data: {
         name,
         location,
-        createdById: req.user.id,
-        updatedById: req.user.id
+        years: {
+          connect: academicYearIds?.map(id => ({ id: parseInt(id) })) || []
+        }
+      },
+      include: {
+        years: true
       }
     });
 
     res.status(201).json(branch);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -72,7 +80,7 @@ const createBranch = async (req, res) => {
 const updateBranch = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, location } = req.body;
+    const { name, location, academicYearIds } = req.body;
 
     const existingBranch = await prisma.branch.findUnique({
       where: { name }
@@ -87,7 +95,13 @@ const updateBranch = async (req, res) => {
       data: {
         name,
         location,
-        updatedById: req.user.id
+        updatedById: req.user.id,
+        years: {
+          set: academicYearIds?.map(id => ({ id: parseInt(id) })) || []
+        }
+      },
+      include: {
+        years: true
       }
     });
 

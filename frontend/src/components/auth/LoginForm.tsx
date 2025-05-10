@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 
@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await login(credentials);
+    await login(credentials.email, credentials.password);
   };
 
   return (
