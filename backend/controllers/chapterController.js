@@ -27,21 +27,22 @@ const getChapters = async (req, res) => {
     const chapters = await prisma.chapter.findMany({
       where,
       include: {
-        subject: {
-          include: {
-            books: {
-              include: {
-                book: true
-              }
-            }
-          }
-        }
+        // subject: {
+        //   include: {
+        //     books: {
+        //       include: {
+        //         book: true
+        //       }
+        //     }
+        //   }
+        // }
       },
       orderBy: { title: 'asc' }
     });
 
     res.json(chapters);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -74,6 +75,7 @@ const getChapterById = async (req, res) => {
 
     res.json(chapter);
   } catch (error) {
+
     res.status(500).json({ error: 'Server error' });
   }
 };

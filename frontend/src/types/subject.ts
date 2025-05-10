@@ -1,9 +1,11 @@
+import { Branch } from './branch';
+
 export interface Subject {
   id: string;
   name: string;
   description?: string;
   userId: number;
-  branchId?: number;
+  branch?: Branch[];
   academicYearId?: number;
   createdAt: string;
   updatedAt: string;
@@ -13,7 +15,7 @@ export interface CreateSubjectPayload {
   name: string;
   description?: string;
   academicYearId?: string;
-  branchId?: number;
+  branchIds?: number[];
 }
 
 // List of available subjects for demonstration

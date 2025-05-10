@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import SubjectCard from './SubjectCard';
 import Button from '../common/Button';
 import { Upload } from 'lucide-react';
-import { SUBJECT_LIST, SUBJECT_COLORS } from '../../types/subject';
+import { SUBJECT_COLORS } from '../../types/subject';
 import UploadSubjectPDF from './UploadSubjectPDF';
-import { getAcademicYears } from '../../api/academicYears';
 import { getBranches } from '../../api/branches';
+import { getSubjects } from '../../api/subjects';
 import { Branch } from '../../types/branch';
+import { Subject } from '../../types/subject';
 import AddBranchModal from './AddBranchModal';
 import AddSubjectModal from './AddSubjectModal';
 
@@ -18,7 +19,9 @@ const BranchGrid: React.FC<BranchGridProps> = ({ year }) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isAddBranchModalOpen, setIsAddBranchModalOpen] = useState(false);
   const [isAddSubjectModalOpen, setIsAddSubjectModalOpen] = useState(false);
-  const [branch, setBranch] = useState<Branch[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [loading, setLoading] = useState(true);
 
   const handleUploadSuccess = (data: any) => {
@@ -26,31 +29,46 @@ const BranchGrid: React.FC<BranchGridProps> = ({ year }) => {
   };
 
   const handleBranchSuccess = (newBranch: Branch) => {
-    setBranch(prev => [...prev, newBranch]);
+    setBranches(prev => [...prev, newBranch]);
     setIsAddBranchModalOpen(false);
   };
 
-  const handleSubjectSuccess = (newSubject: any) => {
-    // Refresh the branch list to show the new subject
-    fetchBranchs();
+  const handleSubjectSuccess = (newSubject: Subject) => {
+    if (selectedBranch) {
+      setSubjects(prev => [...prev, newSubject]);
+    }
     setIsAddSubjectModalOpen(false);
   };
 
-  const fetchBranchs = async () => {
+  const fetchBranches = async () => {
     try {
-      const years = await getBranches(year);
-      setBranch(years);
+      const branchList = await getBranches(year);
+      setBranches(branchList);
     } catch (error) {
-      // Optionally handle error
+      console.error('Failed to fetch branches:', error);
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchSubjects = async (branchId: number) => {
+    try {
+      const subjectList = await getSubjects({ branchId: branchId.toString() });
+      setSubjects(subjectList);
+    } catch (error) {
+      console.error('Failed to fetch subjects:', error);
+    }
+  };
+
+  const handleBranchClick = async (branch: Branch) => {
+    setSelectedBranch(branch);
+    await fetchSubjects(branch.id);
+  };
+
   useEffect(() => {
-    fetchBranchs();
+    fetchBranches();
   }, [year]);
-  
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
@@ -70,28 +88,65 @@ const BranchGrid: React.FC<BranchGridProps> = ({ year }) => {
             <Upload className="h-4 w-4 mr-2" />
             Add Branch
           </Button>
-          <Button
-            variant="primary"
-            onClick={() => setIsAddSubjectModalOpen(true)}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            Add Subject
-          </Button>
+          {selectedBranch && (
+            <Button
+              variant="primary"
+              onClick={() => setIsAddSubjectModalOpen(true)}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Add Subject to {selectedBranch.name}
+            </Button>
+          )}
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {branch.map((subject, index) => (
-          <SubjectCard
-            key={index}
-            id={`subject-${index}`}
-            name={subject.name}
-            colorClass={SUBJECT_COLORS[index % SUBJECT_COLORS.length]}
-            year={year}
-          />
-        ))}
-      </div>
+      {!selectedBranch ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {branches.map((branch, index) => (
+            <div
+              key={branch.id}
+              className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+              onClick={() => handleBranchClick(branch)}
+            >
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <Upload className="h-10 w-10 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg text-gray-800">{branch.name}</h3>
+                  <p className="text-sm text-gray-600 mt-1">Click to view subjects</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <div className="flex items-center mb-6">
+            <button
+              onClick={() => setSelectedBranch(null)}
+              className="text-blue-600 hover:text-blue-800 flex items-center"
+            >
+              <span className="mr-2">←</span> Back to Branches
+            </button>
+            <h3 className="text-2xl font-bold text-gray-800 ml-4">
+              Subjects in {selectedBranch.name}
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {subjects.map((subject, index) => (
+              <SubjectCard
+                key={subject.id}
+                id={subject.id}
+                name={subject.name}
+                colorClass={SUBJECT_COLORS[index % SUBJECT_COLORS.length]}
+                year={year}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       <UploadSubjectPDF
         isOpen={isUploadModalOpen}

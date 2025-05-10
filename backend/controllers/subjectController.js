@@ -43,7 +43,11 @@ const getSubjects = async (req, res) => {
     };
 
     if (branchId) {
-      where.branchId = parseInt(branchId);
+      where.branch={
+       some:{
+        id: parseInt(branchId)
+       }
+      };
     }
 
     if (academicYearId) {
@@ -55,22 +59,14 @@ const getSubjects = async (req, res) => {
       include: {
         branch: true,
         academicYear: true,
-        books: {
-          include: {
-            book: true
-          }
-        },
-        _count: {
-          select: {
-            chapters: true
-          }
-        }
+        
       },
       orderBy: { name: 'asc' }
     });
 
     res.json(subjects);
   } catch (error) {
+    console.log(error); 
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -80,32 +76,28 @@ const getSubjects = async (req, res) => {
 // @access  Private
 const createSubject = async (req, res) => {
   try {
-    const { name, description, branchId, academicYearId, bookIds } = req.body;
+    const { name, description, branchIds, academicYearId, bookIds } = req.body;
 
-    // Verify branch and academic year exist
-    const [branch, academicYear] = await Promise.all([
-      branchId ? prisma.branch.findUnique({ where: { id: parseInt(branchId) } }) : null,
-      academicYearId ? prisma.academicYear.findUnique({ where: { id: parseInt(academicYearId) } }) : null
-    ]);
-
-    if (branchId && !branch) {
-      return res.status(404).json({ error: 'Branch not found' });
-    }
+    // Verify academic year exists
+    const academicYear = academicYearId ? await prisma.academicYear.findUnique({ 
+      where: { id: parseInt(academicYearId) } 
+    }) : null;
 
     if (academicYearId && !academicYear) {
       return res.status(404).json({ error: 'Academic year not found' });
     }
 
-    // Create subject with books
+    // Create subject with books and branches
     const subject = await prisma.subject.create({
       data: {
         name,
         description,
-        // branchId: branchId ? parseInt(branchId) : null,
-        // academicYearId: academicYearId ? parseInt(academicYearId) : null,
         userId: req.user.id,
         createdById: req.user.id,
         updatedById: req.user.id,
+        branch: {
+          connect: branchIds?.map(id => ({ id: parseInt(id) })) || []
+        },
         books: bookIds ? {
           create: bookIds.map(bookId => ({
             book: { connect: { id: bookId } }
@@ -113,8 +105,7 @@ const createSubject = async (req, res) => {
         } : undefined
       },
       include: {
-        // branch: true,
-        // academicYear: true
+        branch: true
       }
     });
 
@@ -131,17 +122,12 @@ const createSubject = async (req, res) => {
 const updateSubject = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, branchId, academicYearId, bookIds } = req.body;
+    const { name, description, branchIds, academicYearId, bookIds } = req.body;
 
-    // Verify branch and academic year exist
-    const [branch, academicYear] = await Promise.all([
-      branchId ? prisma.branch.findUnique({ where: { id: parseInt(branchId) } }) : null,
-      academicYearId ? prisma.academicYear.findUnique({ where: { id: parseInt(academicYearId) } }) : null
-    ]);
-
-    if (branchId && !branch) {
-      return res.status(404).json({ error: 'Branch not found' });
-    }
+    // Verify academic year exists
+    const academicYear = academicYearId ? await prisma.academicYear.findUnique({ 
+      where: { id: parseInt(academicYearId) } 
+    }) : null;
 
     if (academicYearId && !academicYear) {
       return res.status(404).json({ error: 'Academic year not found' });
@@ -153,9 +139,10 @@ const updateSubject = async (req, res) => {
       data: {
         name,
         description,
-        branchId: branchId ? parseInt(branchId) : null,
-        academicYearId: academicYearId ? parseInt(academicYearId) : null,
         updatedById: req.user.id,
+        branch: {
+          set: branchIds?.map(id => ({ id: parseInt(id) })) || []
+        },
         books: bookIds ? {
           deleteMany: {},
           create: bookIds.map(bookId => ({
@@ -165,7 +152,6 @@ const updateSubject = async (req, res) => {
       },
       include: {
         branch: true,
-        academicYear: true,
         books: {
           include: {
             book: true

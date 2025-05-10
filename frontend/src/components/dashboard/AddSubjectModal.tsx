@@ -17,7 +17,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [selectedAcademicYear, setSelectedAcademicYear] = useState('');
-  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedBranches, setSelectedBranches] = useState<number[]>([]);
   const [academicYears, setAcademicYears] = useState<AcademicYear[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
   const [loading, setLoading] = useState(false);
@@ -44,8 +44,8 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedAcademicYear || !selectedBranch) {
-      setError('Please select both academic year and branch');
+    if (!selectedAcademicYear || selectedBranches.length === 0) {
+      setError('Please select both academic year and at least one branch');
       return;
     }
 
@@ -57,7 +57,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
         name,
         description,
         academicYearId: selectedAcademicYear,
-        branchId: parseInt(selectedBranch),
+        branchIds: selectedBranches,
       });
       onSuccess(newSubject);
       onClose();
@@ -66,6 +66,14 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBranchChange = (branchId: number) => {
+    setSelectedBranches(prev => 
+      prev.includes(branchId)
+        ? prev.filter(id => id !== branchId)
+        : [...prev, branchId]
+    );
   };
 
   if (!isOpen) return null;
@@ -115,20 +123,23 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Branch <span className="text-red-500">*</span></label>
-            <select
-              value={selectedBranch}
-              onChange={(e) => setSelectedBranch(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              required
-            >
-              <option value="">Select Branch</option>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Branches <span className="text-red-500">*</span></label>
+            <div className="space-y-2 max-h-40 overflow-y-auto border rounded-md p-2">
               {branches.map((branch) => (
-                <option key={branch.id} value={branch.id}>
-                  {branch.name}
-                </option>
+                <div key={branch.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={`branch-${branch.id}`}
+                    checked={selectedBranches.includes(branch.id)}
+                    onChange={() => handleBranchChange(branch.id)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor={`branch-${branch.id}`} className="ml-2 block text-sm text-gray-900">
+                    {branch.name}
+                  </label>
+                </div>
               ))}
-            </select>
+            </div>
           </div>
 
           {error && (
