@@ -1,0 +1,261 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  role         UserRole? @relation(fields: [roleId], references: [roleId])
+  roleId       Int?
+  name         String    @unique
+  email        String?
+  phone        String    @unique
+  password     String
+  activeStatus Boolean
+  joiningDate  DateTime?
+  fcmToken     String?
+  branchId     Int?
+
+  branch Branch? @relation(fields: [branchId], references: [id])
+
+  createdBooks Book[] @relation("BookCreatedBy")
+  updatedBooks Book[] @relation("BookUpdatedBy")
+  books        Book[] @relation("UserBooks")
+
+  createdSubjects Subject[] @relation("SubjectCreatedBy")
+  updatedSubjects Subject[] @relation("SubjectUpdatedBy")
+
+  subjects          Subject[]
+  createdQRCodes    QRCode[]       @relation("QRCodeCreatedBy")
+  updatedQRCodes    QRCode[]       @relation("QRCodeUpdatedBy")
+  addedQRCodes      QRCode[]       @relation("QRCodeAddedBy")
+  addedById         Int?
+  addedBy           User?          @relation("UserAddedBy", fields: [addedById], references: [id])
+  addedUsers        User[]         @relation("UserAddedBy")
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @default(now()) @updatedAt
+  notifications     Notification[] @relation("UserNotifications")
+  sentNotifications Notification[] @relation("UserSentNotifications")
+
+  updatedSettings    Settings[]   @relation("SettingsUpdatedBy")
+  addedBlockedUrls   BlockedUrl[] @relation("BlockedUrlCreatedBy")
+  updatedBlockedUrls BlockedUrl[] @relation("BlockedUrlUpdatedBy")
+
+  addedWhiteListedUrls   WhitelistedUrl[] @relation("WhitelistedUrlCreatedBy")
+  updatedWhiteListedUrls WhitelistedUrl[] @relation("WhitelistedUrlUpdatedBy")
+
+  createdById Int? // New field to track the user who created the record
+  updatedById Int? // New field to track the user who last updated the record
+}
+
+model UserRole {
+  roleId      Int          @id @default(autoincrement())
+  users       User[]
+  role        String       @unique
+  name        String
+  permissions Permission[]
+}
+
+model Permission {
+  permissionId   Int        @id @default(autoincrement())
+  name           String
+  permissionCode String     @unique
+  description    String?
+  roles          UserRole[]
+}
+
+model Book {
+  id             String    @id @default(uuid())
+  title          String
+  description    String?
+  publisher      String?
+  userId         Int
+  branchId       Int?
+  academicYearId Int?
+  createdById    Int?
+  updatedById    Int?
+  deletedAt      DateTime?
+  isDeleted      Boolean   @default(false)
+
+  user         User          @relation("UserBooks", fields: [userId], references: [id])
+  branch       Branch?       @relation(fields: [branchId], references: [id])
+  academicYear AcademicYear? @relation(fields: [academicYearId], references: [id])
+  createdBy    User?         @relation("BookCreatedBy", fields: [createdById], references: [id])
+  updatedBy    User?         @relation("BookUpdatedBy", fields: [updatedById], references: [id])
+  subjects     Subject[]     @relation("BookSubjects")
+  bookSubjects BookSubject[] // For many-to-many
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([userId])
+  @@index([branchId])
+  @@index([academicYearId])
+  @@index([isDeleted])
+  @@map("books")
+}
+
+model Subject {
+  id             String    @id @default(uuid())
+  name           String
+  description    String?
+  userId         Int
+  branchId       Int?
+  academicYearId Int?
+  createdById    Int?
+  updatedById    Int?
+  deletedAt      DateTime?
+  isDeleted      Boolean   @default(false)
+
+  user         User          @relation(fields: [userId], references: [id])
+  branch       Branch?       @relation(fields: [branchId], references: [id])
+  academicYear AcademicYear? @relation(fields: [academicYearId], references: [id])
+  createdBy    User?         @relation("SubjectCreatedBy", fields: [createdById], references: [id])
+  updatedBy    User?         @relation("SubjectUpdatedBy", fields: [updatedById], references: [id])
+  chapters     Chapter[]
+  books        Book[]        @relation("BookSubjects")
+  bookSubjects BookSubject[] // For many-to-many
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([userId])
+  @@index([branchId])
+  @@index([academicYearId])
+  @@index([isDeleted])
+  @@map("subjects")
+}
+
+model BookSubject {
+  id        Int    @id @default(autoincrement())
+  bookId    String
+  subjectId String
+
+  book    Book    @relation(fields: [bookId], references: [id])
+  subject Subject @relation(fields: [subjectId], references: [id])
+
+  @@unique([bookId, subjectId])
+  @@index([bookId])
+  @@index([subjectId])
+}
+
+model Notification {
+  id          Int     @id @default(autoincrement())
+  title       String
+  message     String
+  isRead      Boolean @default(false)
+  recipientId Int
+  senderId    Int?
+
+  recipient User  @relation("UserNotifications", fields: [recipientId], references: [id])
+  sender    User? @relation("UserSentNotifications", fields: [senderId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([recipientId])
+  @@index([senderId])
+}
+
+model Chapter {
+  id        String   @id @default(uuid())
+  title     String
+  content   String?
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model QRCode {
+  qrCode      String     @id @unique
+  addedById   Int
+  addedBy     User       @relation("QRCodeAddedBy", fields: [addedById], references: [id])
+  createdById Int?
+  updatedById Int?
+  createdBy   User?      @relation("QRCodeCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?      @relation("QRCodeUpdatedBy", fields: [updatedById], references: [id])
+  redirects   Redirect[]
+  qrContent   String // Path to the chapter PDF
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Redirect {
+  id       Int    @id @default(autoincrement())
+  qrCodeId String
+  qrCode   QRCode @relation(fields: [qrCodeId], references: [qrCode])
+  redirect String // URL or redirection target
+}
+
+model AcademicYear {
+  id       Int       @id @default(autoincrement())
+  label    String    @unique // e.g., "2024", "2023-2024"
+  books    Book[]
+  subjects Subject[]
+}
+
+model Branch {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  location  String?
+  createdAt DateTime @default(now())
+
+  users    User[]
+  books    Book[]
+  subjects Subject[]
+}
+
+model WhitelistedUrl {
+  id          Int      @id @default(autoincrement())
+  url         String   @unique
+  domain      String // Can store the domain separately for better filtering.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  createdById Int?
+  updatedById Int?
+
+  createdBy User? @relation("WhitelistedUrlCreatedBy", fields: [createdById], references: [id])
+  updatedBy User? @relation("WhitelistedUrlUpdatedBy", fields: [updatedById], references: [id])
+
+  @@map("whitelisted_urls")
+}
+
+model BlockedUrl {
+  id          Int      @id @default(autoincrement())
+  url         String   @unique
+  domain      String // Can store the domain separately for better filtering.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  createdById Int?
+  updatedById Int?
+
+  createdBy User? @relation("BlockedUrlCreatedBy", fields: [createdById], references: [id])
+  updatedBy User? @relation("BlockedUrlUpdatedBy", fields: [updatedById], references: [id])
+
+  @@map("blocked_urls")
+}
+
+model Settings {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  value       String
+  type        String // e.g., "string", "boolean", "integer", etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  createdById Int?
+  updatedById Int?
+
+  updatedBy User? @relation("SettingsUpdatedBy", fields: [updatedById], references: [id])
+
+  @@map("settings")
+}

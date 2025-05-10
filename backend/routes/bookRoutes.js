@@ -1,37 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const { check } = require('express-validator');
-const { getBooks, getBookById, createBook, updateBook, deleteBook } = require('../controllers/bookController');
-const { protect } = require('../middleware/auth');
+const { auth, checkPermission } = require('../middleware/auth');
+const {
+  getBooks,
+  getBookById,
+  createBook,
+  updateBook,
+  deleteBook
+} = require('../controllers/bookController');
 
-router.get('/', protect, getBooks);
+// @route   GET /api/books
+// @desc    Get all books
+// @access  Private
+router.get('/', auth, getBooks);
 
-router.get('/:id', protect, getBookById);
+// @route   GET /api/books/:id
+// @desc    Get single book
+// @access  Private
+router.get('/:id', auth, getBookById);
 
-router.post(
-  '/',
-  [
-    protect,
-    [
-      check('title', 'Title is required').not().isEmpty(),
-      check('description', 'Description must be at least 10 characters').isLength({ min: 10 })
-    ]
-  ],
-  createBook
-);
+// @route   POST /api/books
+// @desc    Create a book
+// @access  Private (requires 'add-books' permission)
+router.post('/', auth, checkPermission('add-books'), createBook);
 
-router.put(
-  '/:id',
-  [
-    protect,
-    [
-      check('title', 'Title is required').not().isEmpty(),
-      check('description', 'Description must be at least 10 characters').isLength({ min: 10 })
-    ]
-  ],
-  updateBook
-);
+// @route   PUT /api/books/:id
+// @desc    Update a book
+// @access  Private (requires 'edit-books' permission)
+router.put('/:id', auth, checkPermission('edit-books'), updateBook);
 
-router.delete('/:id', protect, deleteBook);
+// @route   DELETE /api/books/:id
+// @desc    Delete a book
+// @access  Private (requires 'delete-books' permission)
+router.delete('/:id', auth, checkPermission('delete-books'), deleteBook);
 
 module.exports = router; 

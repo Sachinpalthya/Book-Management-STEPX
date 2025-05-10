@@ -11,7 +11,12 @@ dotenv.config();
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const subjectRoutes = require('./routes/subjectRoutes');
+const userRoutes = require('./routes/userRoutes');
+const academicYearRoutes = require('./routes/academicYearRoutes');
+const branchRoutes = require('./routes/branchRoutes');
 const chapterRoutes = require('./routes/chapterRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const urlRoutes = require('./routes/urlRoutes');
 
 // Initialize app
 const app = express();
@@ -23,17 +28,17 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
+// app.use();
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/subjects', subjectRoutes);
+app.use('/api/academic-years', academicYearRoutes);
+app.use('/api/branches', branchRoutes);
 app.use('/api/chapters', chapterRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/urls', urlRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

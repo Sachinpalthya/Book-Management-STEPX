@@ -1,33 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { check } = require('express-validator');
-const { registerUser, loginUser, forgotPassword } = require('../controllers/authController');
-router.post(
-  '/register',
-  [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
-  ],
-  registerUser
-);
+const { login, register, forgotPassword, resetPassword } = require('../controllers/authController');
+const { auth, checkPermission } = require('../middleware/auth');
 
-router.post(
-  '/login',
-  [
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists()
-  ],
-  loginUser
-);
+// Public routes
+router.post('/login', login);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
-router.post(
-  '/forgot-password',
-  [
-    check('email', 'Please include a valid email').isEmail()
-  ],
-  forgotPassword
-);
+// Protected routes
+router.post('/register', auth, checkPermission('add-users'), register);
 
 module.exports = router;
 
